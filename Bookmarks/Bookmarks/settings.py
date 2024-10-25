@@ -12,11 +12,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 #!  python manage.py runserver_plus --cert-file cert.crt
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-ALTERN_ROOT = Path("/root/django_proyect/").resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,12 +26,12 @@ ALTERN_ROOT = Path("/root/django_proyect/").resolve().parent.parent
 SECRET_KEY = "django-insecure-+$+4%-emj*37q9^y3i@ky25)xk@*ytxr)76sfh6d+(j)!j7j*0"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS: list = [
-    #"mysite.com",
-    #"localhost",
-    #"127.0.0.1",
+    # "mysite.com",
+    # "localhost",
+    # "127.0.0.1",
     # "0.0.0.0",
 ]
 
@@ -153,16 +153,15 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
-    BASE_DIR / "Bookmarks/static",
-    # "/storage/emulated/0/Coding/Django/Social_Website/Bookmarks/Bookmarks/static",
+    os.path.join(BASE_DIR, "Bookmarks/static"),
 ]
 
-STATIC_ROOT = "/root/django_proyect/static"
+STATIC_ROOT = os.path.join(BASE_DIR, "Bookmarks/staticfiles")
 
 # Media files
 # ______________________________________________________________________
 
-MEDIA_ROOT = ALTERN_ROOT / "media"
+MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
 
 
