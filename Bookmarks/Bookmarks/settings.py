@@ -26,12 +26,12 @@ ALTERN_ROOT = Path("/root/django_proyect/").resolve().parent.parent
 SECRET_KEY = "django-insecure-+$+4%-emj*37q9^y3i@ky25)xk@*ytxr)76sfh6d+(j)!j7j*0"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS: list = [
-    "mysite.com",
-    "localhost",
-    "127.0.0.1",
+    #"mysite.com",
+    #"localhost",
+    #"127.0.0.1",
     # "0.0.0.0",
 ]
 
