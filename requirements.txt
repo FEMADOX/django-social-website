@@ -56,7 +56,6 @@ mkdocs-get-deps==0.2.0
 more-itertools==10.5.0
 mypy==1.11.2
 mypy-extensions==1.0.0
-#mysqlclient
 nltk==3.9.1
 numpy==2.1.2
 oauthlib==3.2.2
@@ -129,6 +128,8 @@ watchgod==0.8.2
 websockets==13.1
 Werkzeug==3.0.4
 wheel==0.44.0
+whitenoise==6.7.0
 wsproto==1.2.0
 WTForms==3.1.2
 xdg==6.0.0
+
