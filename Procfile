@@ -1,1 +1,2 @@
-web: gunicorn Bookmarks.wsgi
+web: python manage.py collectstatic && gunicorn Bookmarks.wsgi
+
