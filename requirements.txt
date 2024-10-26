@@ -73,9 +73,7 @@ psutil==6.0.0
 psycopg2-binary==2.9.10
 py==1.11.0
 pyasn1==0.6.1
-#pycairo==1.27.0
 pycparser==2.22
-#pycups==2.0.4
 pydantic==2.9.2
 pydantic_core==2.23.4
 Pygments==2.18.0
@@ -85,7 +83,6 @@ PyMySQL==1.1.1
 pyOpenSSL==24.2.1
 pyparsing==3.1.4
 pyproject_hooks==1.2.0
-#pysmbc==1.0.25.1
 pytest==8.3.3
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
