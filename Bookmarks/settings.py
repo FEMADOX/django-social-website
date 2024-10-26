@@ -40,11 +40,13 @@ ALLOWED_HOSTS: list = [
 ]
 
 CORS_ORIGIN_WHITELIST: list = [
-    "https://web-production-987fc.up.railway.app" "https://127.0.0.1:8000",
+    "https://web-production-987fc.up.railway.app",
+    "https://127.0.0.1:8000",
 ]
 
 CSRF_TRUSTED_ORIGINS: list = [
-    "https://web-production-987fc.up.railway.app" "https://127.0.0.1:8000",
+    "https://web-production-987fc.up.railway.app",
+    "https://127.0.0.1:8000",
 ]
 
 # Application definition
