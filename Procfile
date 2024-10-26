@@ -1,1 +1,1 @@
-web: gunicorn Bookmarks.wsgi
+web: gunicorn Bookmarks/Bookmarks.wsgi
