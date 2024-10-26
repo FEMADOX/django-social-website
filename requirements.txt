@@ -85,7 +85,7 @@ PyMySQL==1.1.1
 pyOpenSSL==24.2.1
 pyparsing==3.1.4
 pyproject_hooks==1.2.0
-pysmbc==1.0.25.1
+#pysmbc==1.0.25.1
 pytest==8.3.3
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
