@@ -75,7 +75,7 @@ py==1.11.0
 pyasn1==0.6.1
 #pycairo==1.27.0
 pycparser==2.22
-pycups==2.0.4
+#pycups==2.0.4
 pydantic==2.9.2
 pydantic_core==2.23.4
 Pygments==2.18.0
