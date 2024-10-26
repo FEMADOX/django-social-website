@@ -1,1 +1,1 @@
-web: cd Bookmarks && gunicorn Bookmarks.wsgi
+web: gunicorn Bookmarks.Bookmarks.wsgi
