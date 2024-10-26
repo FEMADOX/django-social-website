@@ -57,7 +57,6 @@ mkdocs-get-deps==0.2.0
 more-itertools==10.5.0
 mypy==1.11.2
 mypy-extensions==1.0.0
-# mysqlclient==2.2.5
 nltk==3.9.1
 numpy==2.1.2
 oauthlib==3.2.2
@@ -71,6 +70,7 @@ pipx==1.7.1
 platformdirs==4.3.6
 pluggy==1.5.0
 psutil==6.0.0
+psycopg2==2.9.10
 psycopg2-binary==2.9.10
 py==1.11.0
 pyasn1==0.6.1
