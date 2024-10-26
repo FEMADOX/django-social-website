@@ -4,10 +4,12 @@
 
 {% block content %}
     <h1>{{image.title}}</h1>
+
     {% load thumbnail %}
     <a href="{{image.image.url}}">
         <img src="{% thumbnail image.image 300x0 %}" alt="" class="image-detail">
     </a>
+    
     {% with total_likes = image.users_like.count %}
         <div class="image-info">
             <div>
@@ -29,4 +31,5 @@
         {% endfor %}
         </div>
     {% endwith %}        
+
 {% endblock content %}
