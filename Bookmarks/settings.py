@@ -33,20 +33,14 @@ DEBUG = True
 
 ALLOWED_HOSTS: list = [
     "django-social-website.up.railway.app",
-    # "mysite.com",
-    # "localhost",
-    "127.0.0.1",
-    # "0.0.0.0",
 ]
 
 CORS_ORIGIN_WHITELIST: list = [
     "https://django-social-website.up.railway.app",
-    "https://127.0.0.1:8000",
 ]
 
 CSRF_TRUSTED_ORIGINS: list = [
     "https://django-social-website.up.railway.app",
-    "https://127.0.0.1:8000",
 ]
 
 # Application definition
