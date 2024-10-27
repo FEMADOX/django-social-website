@@ -1,5 +1,4 @@
-// const siteUrl = '//https://django-social-website.up.railway.app/';
-const siteUrl = '//https://127.0.0.1:8000/';
+const siteUrl = '//django-social-website.up.railway.app/';
 const styleUrl = siteUrl + 'static/css/bookmarklet.css';
 const minWidth = 250;
 const minHeight = 250;
