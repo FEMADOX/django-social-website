@@ -1,4 +1,4 @@
-const siteUrl = '//web-production-987fc.up.railway.app/';
+const siteUrl = '//https://django-social-website.up.railway.app/';
 const styleUrl = siteUrl + 'static/css/bookmarklet.css';
 const minWidth = 250;
 const minHeight = 250;

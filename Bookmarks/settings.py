@@ -32,7 +32,7 @@ SECRET_KEY = "django-insecure-+$+4%-emj*37q9^y3i@ky25)xk@*ytxr)76sfh6d+(j)!j7j*0
 DEBUG = True
 
 ALLOWED_HOSTS: list = [
-    "web-production-987fc.up.railway.app",
+    "https://django-social-website.up.railway.app",
     # "mysite.com",
     # "localhost",
     "127.0.0.1",
@@ -40,12 +40,12 @@ ALLOWED_HOSTS: list = [
 ]
 
 CORS_ORIGIN_WHITELIST: list = [
-    "https://web-production-987fc.up.railway.app",
+    "https://django-social-website.up.railway.app",
     "https://127.0.0.1:8000",
 ]
 
 CSRF_TRUSTED_ORIGINS: list = [
-    "https://web-production-987fc.up.railway.app",
+    "https://django-social-website.up.railway.app",
     "https://127.0.0.1:8000",
 ]
 
