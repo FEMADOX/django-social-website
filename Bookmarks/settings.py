@@ -32,7 +32,7 @@ SECRET_KEY = "django-insecure-+$+4%-emj*37q9^y3i@ky25)xk@*ytxr)76sfh6d+(j)!j7j*0
 DEBUG = True
 
 ALLOWED_HOSTS: list = [
-    # "django-social-website.up.railway.app",
+    #! "django-social-website.up.railway.app",
     # "mysite.com",
     # "localhost",
     "127.0.0.1",
@@ -40,12 +40,12 @@ ALLOWED_HOSTS: list = [
 ]
 
 CORS_ORIGIN_WHITELIST: list = [
-    # "https://django-social-website.up.railway.app",
+    #! "https://django-social-website.up.railway.app",
     "https://127.0.0.1:8000",
 ]
 
 CSRF_TRUSTED_ORIGINS: list = [
-    # "https://django-social-website.up.railway.app",
+    #! "https://django-social-website.up.railway.app",
     "https://127.0.0.1:8000",
 ]
 
@@ -103,8 +103,15 @@ WSGI_APPLICATION = "Bookmarks.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+#! DATABASES = {
+#!     "default": dj_database_url.config(default=os.getenv("DATABASE_URL")),
+#! }
+
 DATABASES = {
-    "default": dj_database_url.config(default=os.getenv("DATABASE_URL")),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
