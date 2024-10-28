@@ -73,6 +73,7 @@ MIDDLEWARE = [
 ]
 
 
+
 ROOT_URLCONF = "Bookmarks.urls"
 
 TEMPLATES = [
@@ -99,6 +100,15 @@ WSGI_APPLICATION = "Bookmarks.wsgi.application"
 
 DATABASES = {
     "default": dj_database_url.config(default=os.getenv("DATABASE_URL")),
+}
+
+
+# Storages
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
 }
 
 
@@ -192,3 +202,4 @@ SOCIAL_AUTH_PIPELINE = [
     "social_core.pipeline.social_auth.load_extra_data",
     "social_core.pipeline.user.user_details",
 ]
+
