@@ -33,6 +33,7 @@ DEBUG = False
 
 ALLOWED_HOSTS: list = [
     "django-social-website.up.railway.app",
+    "127.0.0.1",
 ]
 
 CORS_ORIGIN_WHITELIST: list = [
@@ -105,11 +106,11 @@ DATABASES = {
 
 # Storages
 
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+#STORAGES = {
+#    "staticfiles": {
+#        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#    },
+#}
 
 
 # Password validation
