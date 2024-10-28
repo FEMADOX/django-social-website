@@ -33,7 +33,6 @@ DEBUG = False
 
 ALLOWED_HOSTS: list = [
     "django-social-website.up.railway.app",
-    "127.0.0.1",
 ]
 
 CORS_ORIGIN_WHITELIST: list = [
@@ -106,11 +105,11 @@ DATABASES = {
 
 # Storages
 
-#STORAGES = {
-#    "staticfiles": {
-#        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#    },
-#}
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 
 # Password validation
@@ -154,8 +153,6 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "Bookmarks/staticfiles")
-
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Media files
 # ______________________________________________________________________
@@ -204,3 +201,21 @@ SOCIAL_AUTH_PIPELINE = [
     "social_core.pipeline.user.user_details",
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_debug.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
