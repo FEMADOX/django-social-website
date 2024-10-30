@@ -7,3 +7,4 @@ cert.key
 staticfiles
 .env
 media
+django_debug.log
