@@ -70,10 +70,10 @@
                 //* update like count
                 var likeCount = document.querySelector("span.count .total");
                 var totalLikes = parseInt(likeCount.innerHTML);
-                var likeWord = "like"
+                var likeWord = "like";
                 totalLikes = previousAction === "like" ? totalLikes + 1 : totalLikes - 1;
-                likeWord = totalLikes !== 1 ? likeWord = "likes" : likeWord = "like"
-                likeCount.innerHTML = `${totalLikes} ${likeWord}`
+                likeWord = totalLikes !== 1 ? likeWord = "likes" : likeWord = "like";
+                likeCount.innerHTML = `${totalLikes} ${likeWord}`;
             }
         })
     });
