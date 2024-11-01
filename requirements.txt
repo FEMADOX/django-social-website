@@ -10,6 +10,7 @@ blinker==1.8.2
 build==1.2.2.post1
 certifi==2024.8.30
 cffi==1.17.1
+chardet==5.2.0
 charset-normalizer==3.4.0
 click==8.1.7
 colorama==0.4.6
@@ -95,6 +96,7 @@ pyxdg==0.28
 PyYAML==6.0.2
 pyyaml_env_tag==0.1
 regex==2024.9.11
+reportlab==4.2.5
 requests==2.32.3
 requests-oauthlib==2.0.0
 rich==13.9.2

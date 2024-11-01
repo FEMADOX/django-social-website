@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-+$+4%-emj*37q9^y3i@ky25)xk@*ytxr)76sfh6d+(j)!j7j*0"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS: list = [
     "django-social-website.up.railway.app",
@@ -185,11 +185,11 @@ AUTHENTICATION_BACKENDS = [
     "social_core.backends.google.GoogleOAuth2",
 ]
 
-SOCIAL_AUTH_TWITTER_KEY = "lBmGU72ddStwJWXq0aPWsu61O"
-SOCIAL_AUTH_TWITTER_SECRET = "UH9fDashSzghjATR04wbyprcJAU0shV9OhwPD9IrCtmJLbSGTu"
+SOCIAL_AUTH_TWITTER_KEY = "RMhXV71kGnMeBjDGEQNESlYlY"
+SOCIAL_AUTH_TWITTER_SECRET = "y7aBwfwRbHWQdmVCHOspXeMu8n9TUcsVik90M2uHHEpRdHOT0K"
 
-CLIENT_TWITTER_ID = "bDYxdnhxNGpvWG1Xb2NtaHRZZV86MTpjaQ"
-CLIENT_TWITTER_ID_SECRET = "wyHraIc8pAbPkzYmh8Mc2rB-Me64iop2hKAU89QaNTUl_UuZs7"
+#CLIENT_TWITTER_ID = "bDYxdnhxNGpvWG1Xb2NtaHRZZV86MTpjaQ"
+#CLIENT_TWITTER_ID_SECRET = "wyHraIc8pAbPkzYmh8Mc2rB-Me64iop2hKAU89QaNTUl_UuZs7"
 
 SOCIAL_AUTH_GOOGEL_OAUTH2_KEY = "yf9ABbx3mtD7Nh9EbjvkaTQMZ"
 SOCIAL_AUTH_GOOGEL_OAUTH2_SECRET = "jdEbEFXBTS4zLDnqIaR2q65Tl8DgQl1GzcirryHwM0DZB41pxN"
