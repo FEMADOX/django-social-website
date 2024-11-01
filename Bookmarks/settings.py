@@ -73,7 +73,6 @@ MIDDLEWARE = [
 ]
 
 
-
 ROOT_URLCONF = "Bookmarks.urls"
 
 TEMPLATES = [
@@ -106,6 +105,9 @@ DATABASES = {
 # Storages
 
 STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
@@ -154,6 +156,7 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, "Bookmarks/staticfiles")
 
+
 # Media files
 # ______________________________________________________________________
 
@@ -182,8 +185,11 @@ AUTHENTICATION_BACKENDS = [
     "social_core.backends.google.GoogleOAuth2",
 ]
 
-SOCIAL_AUTH_TWITTER_KEY = "yf9ABbx3mtD7Nh9EbjvkaTQMZ"
-SOCIAL_AUTH_TWITTER_SECRET = "jdEbEFXBTS4zLDnqIaR2q65Tl8DgQl1GzcirryHwM0DZB41pxN"
+SOCIAL_AUTH_TWITTER_KEY = "lBmGU72ddStwJWXq0aPWsu61O"
+SOCIAL_AUTH_TWITTER_SECRET = "UH9fDashSzghjATR04wbyprcJAU0shV9OhwPD9IrCtmJLbSGTu"
+
+CLIENT_TWITTER_ID = "bDYxdnhxNGpvWG1Xb2NtaHRZZV86MTpjaQ"
+CLIENT_TWITTER_ID_SECRET = "wyHraIc8pAbPkzYmh8Mc2rB-Me64iop2hKAU89QaNTUl_UuZs7"
 
 SOCIAL_AUTH_GOOGEL_OAUTH2_KEY = "yf9ABbx3mtD7Nh9EbjvkaTQMZ"
 SOCIAL_AUTH_GOOGEL_OAUTH2_SECRET = "jdEbEFXBTS4zLDnqIaR2q65Tl8DgQl1GzcirryHwM0DZB41pxN"
@@ -202,20 +208,20 @@ SOCIAL_AUTH_PIPELINE = [
 ]
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'django_debug.log'),
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "django_debug.log"),
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "DEBUG",
+            "propagate": True,
         },
     },
 }
