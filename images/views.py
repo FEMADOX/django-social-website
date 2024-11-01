@@ -59,7 +59,14 @@ def image_like(request):
                 image.users_like.add(request.user)
             else:
                 image.users_like.remove(request.user)
-            return JsonResponse({"status": "ok"})
+            users_like = [
+                {
+                    "first_name": user.first_name,
+                    "profile_photo": (user.profile.photo.url if user.profile.photo else None),
+                }
+                for user in image.users_like.all()
+            ]
+            return JsonResponse({"status": "ok", "users_like": users_like})
         except Image.DoesNotExist:
             pass
     return JsonResponse({"status": "error"})

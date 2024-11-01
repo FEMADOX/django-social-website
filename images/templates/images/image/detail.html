@@ -24,17 +24,18 @@
             </div>
             {{image.description|linebreaks}}
         </div>
-        <div class="image-likes">
-        {% for user in image.users_like.all %}
-            <div>
-                {% if user.profile.photo %}
-                    <img src="{{user.profile.photo.url}}" alt="">
-                {% endif %}
-                <p>{{user.first_name}}</p>
-            </div>
-        {% empty %}
-            Nobody likes this image yet
-        {% endfor %}
+        <div class="image-likes" id="image-likes">
+            <p>Users Like:</p>
+            {% for user in image.users_like.all %}
+                <div>
+                    {% if user.profile.photo %}
+                        <img src="{{user.profile.photo.url}}" alt="">
+                    {% endif %}
+                    <p>{{user.first_name}}</p>
+                </div>
+            {% empty %}
+                Nobody likes this image yet
+            {% endfor %}
         </div>
     {% endwith %}        
 {% endblock content %}
@@ -43,10 +44,10 @@
     const url = '{% url "images:like" %}';
     var options = {
         method: "POST",
-        headers: {"X-CSRFToken": csrftoken},
+        headers: { "X-CSRFToken": csrftoken },
         mode: "same-origin",
     }
-    document.querySelector("a.like").addEventListener("click", function(e){
+    document.querySelector("a.like").addEventListener("click", function (e) {
         e.preventDefault();
         var likeButton = this;
 
@@ -58,15 +59,14 @@
 
         //* send HTTP request
         fetch(url, options).then(response => response.json()).then(data => {
-            if (data["status"] === "ok")
-            {
+            if (data["status"] === "ok") {
                 var previousAction = likeButton.dataset.action;
 
                 //* toggle button text and data-action
                 var action = previousAction === "like" ? "dislike" : "like";
                 likeButton.dataset.action = action;
                 likeButton.innerHTML = action;
-                
+
                 //* update like count
                 var likeCount = document.querySelector("span.count .total");
                 var totalLikes = parseInt(likeCount.innerHTML);
@@ -74,7 +74,40 @@
                 totalLikes = previousAction === "like" ? totalLikes + 1 : totalLikes - 1;
                 likeWord = totalLikes !== 1 ? likeWord = "likes" : likeWord = "like";
                 likeCount.innerHTML = `${totalLikes} ${likeWord}`;
-            }
-        })
+
+                //* update users like information
+                var usersLike = document.getElementById("image-likes");
+                var pUsersLike = document.createElement("p");
+                usersLike.innerHTML = "";
+                pUsersLike.textContent = "Users Like:";
+                usersLike.appendChild(pUsersLike)
+
+                if (totalLikes === 0) {
+                    var txtDiv = document.createElement("div")
+                    var txtNoLikesYet = document.createElement("p")
+                    txtNoLikesYet.textContent = "Nobody likes thie image yet"
+                    txtDiv.appendChild(txtNoLikesYet)
+                    usersLike.appendChild(txtDiv);
+                } else {
+                    
+                    data["users_like"].forEach(user => {
+                        var userDiv = document.createElement("div");
+                        userDiv.classList.add("image-likes");
+
+                        if (user.profile_photo) {
+                            var img = document.createElement("img");
+                            img.src = user.profile_photo;
+                            userDiv.appendChild(img);
+                        }
+
+                        var p = document.createElement("p");
+                        p.textContent = user.first_name;
+                        userDiv.appendChild(p);
+
+                        usersLike.appendChild(userDiv);
+                    });
+                }
+            };
+        });
     });
 {% endblock domready %}
