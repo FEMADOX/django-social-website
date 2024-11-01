@@ -16,6 +16,7 @@ click==8.1.7
 colorama==0.4.6
 crispy-bootstrap4==2024.10
 cryptography==43.0.1
+cssselect2==0.7.0
 defusedxml==0.8.0rc2
 distro==1.9.0
 dj-database-url==2.3.0
@@ -48,6 +49,7 @@ lazr.restfulclient==0.14.6
 lazr.uri==1.0.6
 livereload==2.7.0
 lunr==0.7.0.post1
+lxml==5.3.0
 Markdown==3.7
 markdown-it-py==3.0.0
 MarkupSafe==3.0.1
@@ -111,6 +113,8 @@ social-auth-core==4.5.4
 sqlparse==0.5.1
 starlette==0.39.2
 style==1.1.0
+svglib==1.5.1
+tinycss2==1.4.0
 tornado==6.4.1
 tqdm==4.66.5
 typer==0.12.5
@@ -130,6 +134,7 @@ wadllib==2.0.0
 watchdog==5.0.3
 watchfiles==0.24.0
 watchgod==0.8.2
+webencodings==0.5.1
 websockets==13.1
 Werkzeug==3.0.4
 wheel==0.44.0
