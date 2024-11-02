@@ -11,7 +11,13 @@
                         <img src="{% thumbnail user.profile.photo 180x180 %}" alt="">
                     </a>
                     <div class="info">
-                        <a href="{{user.get_absolute_url}}" class="title">{{user.get_full_name}}</a>
+                        <a href="{{user.get_absolute_url}}" class="title">
+                            {% if request.user == user %}
+                                {{user.get_full_name}} (YOU)
+                            {% else %}
+                                {{user.get_full_name}}
+                            {% endif %}
+                        </a>
                     </div>
                 </div>
             {% endif %}

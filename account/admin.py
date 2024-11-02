@@ -11,5 +11,5 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
-    list_display = ["user_form", "user_form", "created"]
+    list_display = ["user_from", "user_to", "created"]
     list_filter = ["created",]

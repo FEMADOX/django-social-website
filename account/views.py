@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
 from account.forms import ProfileEditForm, UserEditForm, UserRegistrationForm
-from account.models import Profile
+from account.models import Contact, Profile
 
 # // from account.forms import LoginForm
 # // from django.contrib.auth import authenticate, login
@@ -98,6 +100,36 @@ def user_detail(request, username):
             "user": user,
         },
     )
+
+
+@login_required
+@require_POST
+def user_follow(request):
+    user_id = request.POST.get("id")
+    action = request.POST.get("action")
+    if user_id and action:
+        try:
+            user = User.objects.get(id=user_id)
+            if action == "follow":
+                Contact.objects.get_or_create(user_from=request.user, user_to=user)
+            else:
+                Contact.objects.filter(user_from=request.user, user_to=user).delete()
+            # users_follow = [
+            #     {
+            #         "first_name": user.first_name,
+            #         "profile_photo": (user.profile.photo.url if user.profile.photo else None),
+            #     }
+            #     for user in user.users_follow.all()
+            # ]
+            return JsonResponse(
+                {
+                    "status": "ok",
+                    # "users_follow": users_follow,
+                }
+            )
+        except Contact.DoesNotExist:
+            return JsonResponse({"status": "error"})
+    return JsonResponse({"status": "error"})
 
 
 # // def user_login(request):
