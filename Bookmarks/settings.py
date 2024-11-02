@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 
 import dj_database_url  # type: ignore
+from django.urls import reverse_lazy
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -224,4 +225,8 @@ LOGGING = {
             "propagate": True,
         },
     },
+}
+
+ABSOLUTE_URL_OVERRIDES = {
+    "auth.user": lambda u: reverse_lazy("user_detail", args=[u.username])
 }
