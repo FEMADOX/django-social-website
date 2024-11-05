@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -6,21 +7,21 @@ from django.db import models
 
 
 class Action(models.Model):
-    user = models.ForeignKey(
-        "auth.User",
+    user: models.ForeignKey = models.ForeignKey(
+        User,
         related_name="actions",
         on_delete=models.CASCADE,
-    )  # type:ignore
-    verb = models.CharField(max_length=255)  # type:ignore
-    created = models.DateTimeField(auto_now_add=True)  # type:ignore
-    target_ct = models.ForeignKey(
+    )
+    verb: models.CharField = models.CharField(max_length=255)
+    created: models.DateTimeField = models.DateTimeField(auto_now_add=True)
+    target_ct: models.ForeignKey = models.ForeignKey(
         ContentType,
         blank=True,
         null=True,
         related_name="target_obj",
         on_delete=models.CASCADE,
-    )  # type: ignore
-    target_id = models.PositiveIntegerField(blank=True, null=True)  # type: ignore
+    )
+    target_id: models.PositiveIntegerField = models.PositiveIntegerField(blank=True, null=True)
     target = GenericForeignKey("target_ct", "target_id")
 
     class Meta:
