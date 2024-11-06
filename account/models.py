@@ -1,31 +1,43 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # type: ignore
-    date_of_birth = models.DateField(blank=True, null=True)  # type: ignore
-    photo = models.ImageField(upload_to="users/%Y/%m/%d", blank=True)
+    user: models.OneToOneField = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    date_of_birth: models.DateField = models.DateField(
+        blank=True,
+        null=True,
+    )
+    photo: models.ImageField = models.ImageField(
+        upload_to="users/%Y/%m/%d",
+        blank=True,
+    )
 
     def __str__(self):
         return f"Profile of {self.user.username}"
 
 
 class Contact(models.Model):
-    user_from = models.ForeignKey(
-        "auth.User",
+    user_from: models.ForeignKey = models.ForeignKey(
+        User,
         related_name="rel_from_set",
         on_delete=models.CASCADE,
-    )  # type: ignore
-    user_to = models.ForeignKey(
-        "auth.User",
+    )
+    user_to: models.ForeignKey = models.ForeignKey(
+        User,
         related_name="rel_to_set",
         on_delete=models.CASCADE,
-    )  # type: ignore
-    created = models.DateTimeField(auto_now_add=True)  # type: ignore
+    )
+    created: models.DateTimeField = models.DateTimeField(
+        auto_now_add=True,
+    )
 
     class Meta:
         indexes = [

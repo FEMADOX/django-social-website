@@ -32,22 +32,22 @@ SECRET_KEY = "django-insecure-+$+4%-emj*37q9^y3i@ky25)xk@*ytxr)76sfh6d+(j)!j7j*0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS: list = [
+ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
-CORS_ORIGIN_WHITELIST: list = [
+CORS_ORIGIN_WHITELIST = [
     "https://127.0.0.1:8000",
 ]
 
-CSRF_TRUSTED_ORIGINS: list = [
+CSRF_TRUSTED_ORIGINS = [
     "https://127.0.0.1:8000",
 ]
 
 # Application definition
 
 INSTALLED_APPS = [
-    "account.apps.AccountConfig",
+    "account",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -57,8 +57,9 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "social_django",
     "django_extensions",
-    "images.apps.ImagesConfig",
+    "images",
     "easy_thumbnails",
+    "action",
 ]
 
 MIDDLEWARE = [
