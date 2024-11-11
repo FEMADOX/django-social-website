@@ -7,26 +7,29 @@ from django.utils.text import slugify
 
 
 class Image(models.Model):
-    user = models.ForeignKey(
+    user: models.ForeignKey = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="images_created",
         on_delete=models.CASCADE,
-    )  # type:ignore
-    users_like = models.ManyToManyField(
+    )
+    users_like: models.ManyToManyField = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="images_liked",
         blank=True,
-    )  # type:ignore
-    title = models.CharField(max_length=200)  # type:ignore
-    slug = models.SlugField(max_length=200, blank=True)  # type:ignore
-    url = models.URLField(max_length=2000)  # type:ignore
-    image = models.ImageField(upload_to="images/%Y/%m/%d")  # type:ignore
-    description = models.TextField(blank=True)  # type:ignore
-    created_at = models.DateField(auto_now_add=True)  # type:ignore
+    )
+    title: models.CharField = models.CharField(max_length=200)
+    slug: models.SlugField = models.SlugField(max_length=200, blank=True)
+    url: models.URLField = models.URLField(max_length=2000)
+    image: models.ImageField = models.ImageField(upload_to="images/%Y/%m/%d")
+    description: models.TextField = models.TextField(blank=True)
+    created_at: models.DateField = models.DateField(auto_now_add=True)
+    total_likes: models.PositiveIntegerField = models.PositiveIntegerField(default=0)
+    total_views: models.PositiveIntegerField = models.PositiveIntegerField(default=0)
 
     class Meta:
         indexes = [
             models.Index(fields=["created_at"]),
+            models.Index(fields=["-total_likes"]),
         ]
         ordering = ["-created_at"]
 

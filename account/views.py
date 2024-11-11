@@ -7,6 +7,8 @@ from django.views.decorators.http import require_POST
 
 from account.forms import ProfileEditForm, UserEditForm, UserRegistrationForm
 from account.models import Contact, Profile
+from action.models import Action
+from action.utils import create_action
 
 # // from account.forms import LoginForm
 # // from django.contrib.auth import authenticate, login
@@ -18,7 +20,23 @@ from account.models import Contact, Profile
 
 @login_required
 def dashboard(request):
-    return render(request, "account/dashboard.html", {"section": "dashboard"})
+    # Display all actions by default
+    actions = Action.objects.exclude(user=request.user)
+    following_ids = request.user.following.values_list("id", flat=True)
+    if following_ids:
+        # If user is following others, retrieve only their actions
+        actions = actions.filter(user_id__in=following_ids)
+    actions = actions.select_related("user", "user__profile")[:10]  # One to Many relation
+    # actions = actions.prefetch_related("target")[:10] <= Many to Many relation
+    
+    return render(
+        request,
+        "account/dashboard.html",
+        {
+            "section": "dashboard",
+            "actions": actions,
+        },
+    )
 
 
 def register(request):
@@ -29,6 +47,8 @@ def register(request):
             new_user.set_password(user_form.cleaned_data["password"])
             new_user.save()
             Profile.objects.create(user=new_user)
+            create_action(request.user, "Create account")
+            messages.success(request, "Account has been created successfully")
             return render(request, "account/register_done.html", {"new_user": new_user})
     else:
         user_form = UserRegistrationForm()
@@ -45,6 +65,7 @@ def edit(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+            create_action(request.user, "Edit profile", profile_form)
             messages.success(request, "Profile has been updated successfully")
             return render(request, "account/dashboard.html")
         else:
@@ -86,7 +107,7 @@ def user_list(request):
 
 
 @login_required
-def user_detail(request, username):
+def user_detail(request, username: str):
     user = get_object_or_404(
         User,
         username=username,
@@ -112,21 +133,11 @@ def user_follow(request):
             user = User.objects.get(id=user_id)
             if action == "follow":
                 Contact.objects.get_or_create(user_from=request.user, user_to=user)
+                create_action(request.user, "Follow", user)
             else:
                 Contact.objects.filter(user_from=request.user, user_to=user).delete()
-            # users_follow = [
-            #     {
-            #         "first_name": user.first_name,
-            #         "profile_photo": (user.profile.photo.url if user.profile.photo else None),
-            #     }
-            #     for user in user.users_follow.all()
-            # ]
-            return JsonResponse(
-                {
-                    "status": "ok",
-                    # "users_follow": users_follow,
-                }
-            )
+                create_action(request.user, "Unfollow", user)
+            return JsonResponse({"status": "ok"})
         except Contact.DoesNotExist:
             return JsonResponse({"status": "error"})
     return JsonResponse({"status": "error"})
