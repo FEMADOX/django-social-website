@@ -39,12 +39,21 @@ def image_create(request):
 
 def image_detail(request, id, slug):
     image = get_object_or_404(Image, id=id, slug=slug)
+    viewed_images = request.session.get("viewed_images", [])
+    
+    if image.id not in viewed_images:
+        image.total_views += 1
+        image.save()
+        viewed_images.append(image.id)
+        request.session["viewed_images"] = viewed_images
+        
     return render(
         request,
         "images/image/detail.html",
         {
             "section": "images",
             "image": image,
+            "total_views": image.total_views,
         },
     )
 

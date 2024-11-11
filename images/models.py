@@ -24,6 +24,7 @@ class Image(models.Model):
     description: models.TextField = models.TextField(blank=True)
     created_at: models.DateField = models.DateField(auto_now_add=True)
     total_likes: models.PositiveIntegerField = models.PositiveIntegerField(default=0)
+    total_views: models.PositiveIntegerField = models.PositiveIntegerField(default=0)
 
     class Meta:
         indexes = [
