@@ -47,16 +47,16 @@ CSRF_TRUSTED_ORIGINS: list = [
 # Application definition
 
 INSTALLED_APPS = [
-    "account",
+    "whitenoise.runserver_nostatic",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "whitenoise.runserver_nostatic",
     "social_django",
     "django_extensions",
+    "account",
     "images",
     "easy_thumbnails",
     "action",
