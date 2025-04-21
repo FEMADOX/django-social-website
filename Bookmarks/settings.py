@@ -114,7 +114,7 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 #     "staticfiles": {
 #         "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
