@@ -33,7 +33,8 @@ SECRET_KEY = "django-insecure-+$+4%-emj*37q9^y3i@ky25)xk@*ytxr)76sfh6d+(j)!j7j*0
 DEBUG = False
 
 ALLOWED_HOSTS: list = [
-    "django-social-website.up.railway.app",
+    # "django-social-website.up.railway.app",
+    "*",
 ]
 
 CORS_ORIGIN_WHITELIST: list = [
@@ -154,13 +155,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "Bookmarks/static"),
-]
-
-STATIC_ROOT = os.path.join(BASE_DIR, "Bookmarks/staticfiles")
-
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # Media files
 # ______________________________________________________________________
