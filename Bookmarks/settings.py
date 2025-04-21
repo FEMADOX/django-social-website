@@ -104,21 +104,6 @@ DATABASES = {
 }
 
 
-# Storages
-# WHITENOISE_MANIFEST_STRICT = False
-WHITENOISE_USE_FINDERS = True
-
-STORAGES = {
-    "default": {
-        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-    },
-#     "staticfiles": {
-#         "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
-#     },
-}
 # STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 # Password validation
@@ -154,6 +139,20 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+WHITENOISE_USE_FINDERS = True
+
+STORAGES = {
+    # "default": {
+    #     "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+    # },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+}
+#     "staticfiles": {
+#         "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+#     },
+
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
