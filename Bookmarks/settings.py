@@ -33,8 +33,7 @@ SECRET_KEY = "django-insecure-+$+4%-emj*37q9^y3i@ky25)xk@*ytxr)76sfh6d+(j)!j7j*0
 DEBUG = False
 
 ALLOWED_HOSTS: list = [
-    # "django-social-website.up.railway.app",
-    "*",
+    "django-social-website.up.railway.app",
 ]
 
 CORS_ORIGIN_WHITELIST: list = [
@@ -107,7 +106,7 @@ DATABASES = {
 
 # Storages
 WHITENOISE_MANIFEST_STRICT = False
-WHITENOISE_USE_FINDERS = True
+# WHITENOISE_USE_FINDERS = True
 
 STORAGES = {
     "default": {
