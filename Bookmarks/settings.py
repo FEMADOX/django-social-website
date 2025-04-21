@@ -107,7 +107,7 @@ DATABASES = {
 
 # Storages
 
-# STORAGES = {
+STORAGES = {
 #     # "default": {
 #     #     "BACKEND": "django.core.files.storage.FileSystemStorage",
 #     # },
@@ -117,7 +117,7 @@ DATABASES = {
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
     },
-# }
+}
 # STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 # Password validation
