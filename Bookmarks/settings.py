@@ -106,8 +106,8 @@ DATABASES = {
 
 
 # Storages
-
 WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_USE_FINDERS = True
 
 STORAGES = {
     "default": {
