@@ -106,6 +106,7 @@ DATABASES = {
 
 
 # Storages
+WHITENOISE_MANIFEST_STRICT = False
 
 STORAGES = {
     "default": {
