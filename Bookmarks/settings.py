@@ -142,16 +142,13 @@ USE_TZ = True
 WHITENOISE_USE_FINDERS = True
 
 STORAGES = {
-    # "default": {
-    #     "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
-    # },
+    "default": {
+        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
-#     "staticfiles": {
-#         "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
-#     },
 
 
 STATIC_URL = "static/"
