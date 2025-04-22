@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 
 import dj_database_url  # type: ignore
+from decouple import config
 from django.urls import reverse_lazy
 from dotenv import load_dotenv
 
@@ -27,36 +28,30 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-+$+4%-emj*37q9^y3i@ky25)xk@*ytxr)76sfh6d+(j)!j7j*0"
+SECRET_KEY = config("SECRET_KEY", cast=str)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS: list = [
-    "django-social-website.up.railway.app",
-]
+ALLOWED_HOSTS: str = config("ALLOWED_HOSTS").split(",")
 
-CORS_ORIGIN_WHITELIST: list = [
-    "https://django-social-website.up.railway.app",
-]
+CORS_ORIGIN_WHITELIST: str = config("CORS_ORIGIN_WHITELIST").split(",")
+CSRF_TRUSTED_ORIGINS: str = config("CSRF_TRUSTED_ORIGINS").split(",")
 
-CSRF_TRUSTED_ORIGINS: list = [
-    "https://django-social-website.up.railway.app",
-]
 
 # Application definition
 
 INSTALLED_APPS = [
-    "whitenoise.runserver_nostatic",
+    "account",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "whitenoise.runserver_nostatic",
     "social_django",
     "django_extensions",
-    "account",
     "images",
     "easy_thumbnails",
     "action",
@@ -104,14 +99,13 @@ DATABASES = {
 }
 
 
-# STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation."
+        "UserAttributeSimilarityValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -140,24 +134,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 WHITENOISE_USE_FINDERS = True
-
 STORAGES = {
     "default": {
         "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
-
 STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-
-# Media files
-# ______________________________________________________________________
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "media/"
@@ -184,14 +172,14 @@ AUTHENTICATION_BACKENDS = [
     "social_core.backends.google.GoogleOAuth2",
 ]
 
-SOCIAL_AUTH_TWITTER_KEY = "RMhXV71kGnMeBjDGEQNESlYlY"
-SOCIAL_AUTH_TWITTER_SECRET = "y7aBwfwRbHWQdmVCHOspXeMu8n9TUcsVik90M2uHHEpRdHOT0K"
+SOCIAL_AUTH_TWITTER_KEY = config("SOCIAL_AUTH_TWITTER_KEY", cast=str)
+SOCIAL_AUTH_TWITTER_SECRET = config("SOCIAL_AUTH_TWITTER_SECRET", cast=str)
 
-#CLIENT_TWITTER_ID = "bDYxdnhxNGpvWG1Xb2NtaHRZZV86MTpjaQ"
-#CLIENT_TWITTER_ID_SECRET = "wyHraIc8pAbPkzYmh8Mc2rB-Me64iop2hKAU89QaNTUl_UuZs7"
+# CLIENT_TWITTER_ID = "bDYxdnhxNGpvWG1Xb2NtaHRZZV86MTpjaQ"
+# CLIENT_TWITTER_ID_SECRET = "wyHraIc8pAbPkzYmh8Mc2rB-Me64iop2hKAU89QaNTUl_UuZs7"
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "741993568755-gnd35uf070n6vbck4rvih4bsu0ohlc4g.apps.googleusercontent.com"
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "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"
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", cast=str)
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET", cast=str)
 
 SOCIAL_AUTH_PIPELINE = [
     "social_core.pipeline.social_auth.social_details",
@@ -226,5 +214,5 @@ LOGGING = {
 }
 
 ABSOLUTE_URL_OVERRIDES = {
-    "auth.user": lambda u: reverse_lazy("user_detail", args=[u.username])
+    "auth.user": lambda u: reverse_lazy("user_detail", args=[u.username]),
 }

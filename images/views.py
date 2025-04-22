@@ -1,10 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from account.views import HttpResponsePermanentRedirect, HttpResponseRedirect
 from action.utils import create_action
 from images.forms import ImageCreateForm
 from images.models import Image
@@ -13,11 +14,13 @@ from images.models import Image
 
 
 @login_required
-def image_create(request):
+def image_create(
+    request: HttpRequest,
+) -> HttpResponseRedirect | HttpResponsePermanentRedirect | HttpResponse:
     if request.method == "POST":
         form = ImageCreateForm(data=request.POST)
         if form.is_valid():
-            cd = form.cleaned_data
+            _ = form.cleaned_data
             new_image = form.save(commit=False)
             new_image.user = request.user
             new_image.save()
@@ -37,16 +40,16 @@ def image_create(request):
     )
 
 
-def image_detail(request, id, slug):
-    image = get_object_or_404(Image, id=id, slug=slug)
+def image_detail(request: HttpRequest, img_id: int, slug: str) -> HttpResponse:
+    image = get_object_or_404(Image, pk=img_id, slug=slug)
     viewed_images = request.session.get("viewed_images", [])
-    
-    if image.id not in viewed_images:
+
+    if image.pk not in viewed_images:
         image.total_views += 1
         image.save()
-        viewed_images.append(image.id)
+        viewed_images.append(image.pk)
         request.session["viewed_images"] = viewed_images
-        
+
     return render(
         request,
         "images/image/detail.html",
@@ -60,7 +63,7 @@ def image_detail(request, id, slug):
 
 @login_required
 @require_POST
-def image_like(request):
+def image_like(request: HttpRequest) -> JsonResponse:
     image_id = request.POST.get("id")
     action = request.POST.get("action")
     if image_id and action:
@@ -75,7 +78,9 @@ def image_like(request):
             users_like = [
                 {
                     "first_name": user.first_name,
-                    "profile_photo": (user.profile.photo.url if user.profile.photo else None),
+                    "profile_photo": (
+                        user.profile.photo.url if user.profile.photo else None
+                    ),
                 }
                 for user in image.users_like.all()
             ]
@@ -86,13 +91,13 @@ def image_like(request):
 
 
 @login_required
-def image_list(request):
+def image_list(request: HttpRequest) -> HttpResponse:
     images = Image.objects.all()
     paginator = Paginator(images, 3)
     page = request.GET.get("page")
     images_only = request.GET.get("images_only")
     try:
-        images = paginator.page(page)
+        images = paginator.page(page)  # type: ignore
     except PageNotAnInteger:
         images = paginator.page(1)
     except EmptyPage:

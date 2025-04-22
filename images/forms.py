@@ -2,6 +2,7 @@ import requests
 from django import forms
 from django.core.files.base import ContentFile
 from django.utils.text import slugify
+
 from images.models import Image
 
 
@@ -13,7 +14,7 @@ class ImageCreateForm(forms.ModelForm):
             "url": forms.HiddenInput,
         }
 
-    def clean_url(self):
+    def clean_url(self) -> str:
         url = self.cleaned_data["url"]
         valid_extensions = ["jpg", "jpeg", "png"]
         extension = url.rsplit(".", 1)[1].lower()

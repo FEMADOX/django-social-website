@@ -1,6 +1,9 @@
-from account.models import Profile
+from typing import Any
+
 from django import forms
 from django.contrib.auth.models import User
+
+from account.models import Profile
 
 # Code Down Here
 
@@ -28,7 +31,7 @@ class UserRegistrationForm(forms.ModelForm):
         model = User
         fields = ["username", "first_name", "last_name", "email"]
 
-    def clean_password2(self):
+    def clean_password2(self) -> str:
         cd = self.cleaned_data
         if cd["password"] != cd["password2"]:
             raise forms.ValidationError("Passwords don't match")
