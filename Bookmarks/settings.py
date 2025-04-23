@@ -33,15 +33,16 @@ SECRET_KEY = config("SECRET_KEY", cast=str)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS: str = config("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS: str = config("ALLOWED_HOSTS").split(",")  # type: ignore
 
-CORS_ORIGIN_WHITELIST: str = config("CORS_ORIGIN_WHITELIST").split(",")
-CSRF_TRUSTED_ORIGINS: str = config("CSRF_TRUSTED_ORIGINS").split(",")
+CORS_ORIGIN_WHITELIST: str = config("CORS_ORIGIN_WHITELIST").split(",")  # type: ignore
+CSRF_TRUSTED_ORIGINS: str = config("CSRF_TRUSTED_ORIGINS").split(",")  # type: ignore
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
     "account",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -49,7 +50,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "whitenoise.runserver_nostatic",
     "social_django",
     "django_extensions",
     "images",
