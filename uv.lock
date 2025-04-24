@@ -1,8 +1,6 @@
 version = 1
 revision = 1
 requires-python = ">=3.11"
-<<<<<<< HEAD
-=======
 resolution-markers = [
     "python_full_version >= '3.13'",
     "python_full_version < '3.13'",
@@ -380,7 +378,6 @@ sdist = { url = "https://files.pythonhosted.org/packages/e7/46/bd74733ff23167559
 wheels = [
     { url = "https://files.pythonhosted.org/packages/61/ad/689f02752eeec26aed679477e80e632ef1b682313be70793d798c1d5fc8f/PyJWT-2.10.1-py3-none-any.whl", hash = "sha256:dcdd193e30abefd5debf142f9adfcdd2b58004e644f25406ffaebd50bd98dacb", size = 22997 },
 ]
->>>>>>> develop
 
 [[package]]
 name = "python-decouple"
@@ -392,8 +389,6 @@ wheels = [
 ]
 
 [[package]]
-<<<<<<< HEAD
-=======
 name = "python3-openid"
 version = "3.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -465,18 +460,10 @@ wheels = [
 ]
 
 [[package]]
->>>>>>> develop
 name = "social-website"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-<<<<<<< HEAD
-    { name = "python-decouple" },
-]
-
-[package.metadata]
-requires-dist = [{ name = "python-decouple", specifier = ">=3.8" }]
-=======
     { name = "dj-database-url" },
     { name = "django" },
     { name = "django-cors-headers" },
@@ -572,4 +559,3 @@ sdist = { url = "https://files.pythonhosted.org/packages/b9/cf/c15c2f21aee6b22a9
 wheels = [
     { url = "https://files.pythonhosted.org/packages/64/b2/2ce9263149fbde9701d352bda24ea1362c154e196d2fda2201f18fc585d7/whitenoise-6.9.0-py3-none-any.whl", hash = "sha256:c8a489049b7ee9889617bb4c274a153f3d979e8f51d2efd0f5b403caf41c57df", size = 20161 },
 ]
->>>>>>> develop

@@ -1,7 +1,8 @@
 from django.urls import path
+
 from images import views
 
-#
+# Add your code here
 
 app_name = "images"
 urlpatterns = [

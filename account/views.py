@@ -1,8 +1,15 @@
+from __future__ import annotations
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpRequest, JsonResponse
-from django.http.response import HttpResponsePermanentRedirect, HttpResponseRedirect
+from django.http import (
+    HttpRequest,
+    HttpResponse,
+    HttpResponsePermanentRedirect,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
@@ -10,7 +17,6 @@ from account.forms import ProfileEditForm, UserEditForm, UserRegistrationForm
 from account.models import Contact, Profile
 from action.models import Action
 from action.utils import create_action
-from images.views import HttpResponse
 
 # // from account.forms import LoginForm
 # // from django.contrib.auth import authenticate, login
@@ -73,7 +79,7 @@ def edit(
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            create_action(request.user, "Edit profile", profile_form)
+            create_action(request.user, "Edit profile", profile_form)  # type: ignore
             messages.success(request, "Profile has been updated successfully")
             return render(request, "account/dashboard.html")
         messages.error(request, "Error updating your profile")
@@ -87,7 +93,6 @@ def edit(
             Profile.objects.create(user=request.user)
             profile_form = ProfileEditForm(instance=request.user.profile)  # type: ignore
             return redirect(
-                request,
                 "account/edit_new_profile.html",
                 {"profile_form": profile_form},
             )
@@ -142,10 +147,10 @@ def user_follow(request: HttpRequest) -> JsonResponse:
             user = User.objects.get(id=user_id)
             if action == "follow":
                 Contact.objects.get_or_create(user_from=request.user, user_to=user)
-                create_action(request.user, "Follow", user)
+                create_action(request.user, "Follow", user)  # type: ignore
             else:
                 Contact.objects.filter(user_from=request.user, user_to=user).delete()
-                create_action(request.user, "Unfollow", user)
+                create_action(request.user, "Unfollow", user)  # type: ignore
             return JsonResponse({"status": "ok"})
         except Contact.DoesNotExist:
             return JsonResponse({"status": "error"})

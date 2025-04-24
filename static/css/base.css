@@ -36,11 +36,7 @@ h1 {
 }
 
 h2 {
-<<<<<<< HEAD
-    margin: 30px 0 20px;
-=======
     margin: 30px 0 10px;
->>>>>>> develop
 }
 
 ol {
@@ -59,9 +55,13 @@ ol {
 #header .logo {
     font-family: 'Muli', sans-serif;
     float: left;
-    color: #f3f7cc;
+    color: #f2f8bb;
     font-size: 20px;
     margin-right: 10%;
+}
+
+#header .logo:hover {
+    color: #fff;
 }
 
 #header ul.menu {
@@ -83,7 +83,7 @@ ol {
 }
 
 #header a {
-    color: #f3f7cc;
+    color: #f2f8bb;
 }
 
 #header a:hover {
@@ -107,10 +107,7 @@ form {
 form p {
     width: 100%;
     overflow: auto;
-<<<<<<< HEAD
-=======
     margin-bottom: 0;
->>>>>>> develop
 }
 
 label {
@@ -120,8 +117,6 @@ label {
     margin-bottom: 4px;
 }
 
-<<<<<<< HEAD
-=======
 form p label {
     margin: 0 2px;
 }
@@ -130,62 +125,39 @@ form p label {
     margin: 0 2px;
 }
 
->>>>>>> develop
 input,
 textarea {
     clear: both;
     float: left;
-<<<<<<< HEAD
-    margin: 0 0 10px;
-    background: #efefef;
-=======
     margin: 0 2px 5px;
     background: #edecec;
->>>>>>> develop
     border: 0;
     padding: 6px 10px;
     font-size: 14px;
+}
+
+input:hover,
+input:focus {
+    background: #fffcc8;
+    transition: background 0.3s ease;
 }
 
 input[type=submit],
 a.button {
     font-weight: bold;
     background: #12c064;
-<<<<<<< HEAD
-    color: #fff;
-    padding: 10px 20px;
-=======
     color: #ffffff;
     padding: 10px 20px;
     margin: 0 2px;
->>>>>>> develop
     font-size: 14px;
     text-transform: uppercase;
 }
 
-<<<<<<< HEAD
-#id_username,
-#id_email,
-#id_first_name,
-#id_last_name,
-#id_password2,
-#id_password {
-    margin: 0 2px 10px;
-    background-color: #fffcc8;
-}
-
-.errorlist {
-    color: #cc0033;
-    float: left;
-    clear: both;
-    padding-left: 10px;
-=======
 .errorlist {
     color: #cc0033;
     clear: both;
     padding-left: 0;
     display: inline;
->>>>>>> develop
 }
 
 .helptext {
@@ -330,26 +302,16 @@ a.follow {
 
 #image-list .image {
     float: left;
-<<<<<<< HEAD
-    width: 300px;
-    height: 400px;
-=======
     width: 220px;
     height: 300px;
->>>>>>> develop
     margin: 0 10px 10px 10px;
     border-top: 8px solid #12c064;
     background: #eee;
 }
 
 #image-list img {
-<<<<<<< HEAD
-    width: 300px;
-    height: 300px;
-=======
     width: 220px;
     height: 220px;
->>>>>>> develop
 }
 
 #image-list .info {

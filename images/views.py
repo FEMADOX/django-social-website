@@ -2,10 +2,6 @@ from __future__ import annotations
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-<<<<<<< HEAD
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.http import HttpRequest, HttpResponse, JsonResponse
-=======
 from django.core.paginator import EmptyPage, Paginator
 from django.http import (
     HttpRequest,
@@ -14,11 +10,9 @@ from django.http import (
     HttpResponseRedirect,
     JsonResponse,
 )
->>>>>>> develop
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from account.views import HttpResponsePermanentRedirect, HttpResponseRedirect
 from action.utils import create_action
 from images.forms import ImageCreateForm
 from images.models import Image
@@ -45,7 +39,7 @@ def image_create(
 
     return render(
         request,
-        "images/image/create.html",
+        "images/create.html",
         {
             "section": "images",
             "form": form,
@@ -53,13 +47,8 @@ def image_create(
     )
 
 
-<<<<<<< HEAD
 def image_detail(request: HttpRequest, img_id: int, slug: str) -> HttpResponse:
     image = get_object_or_404(Image, pk=img_id, slug=slug)
-=======
-def image_detail(request: HttpRequest, image_id: int, slug: str) -> HttpResponse:
-    image = get_object_or_404(Image, id=image_id, slug=slug)
->>>>>>> develop
     viewed_images = request.session.get("viewed_images", [])
 
     if image.pk not in viewed_images:
@@ -70,7 +59,7 @@ def image_detail(request: HttpRequest, image_id: int, slug: str) -> HttpResponse
 
     return render(
         request,
-        "images/image/detail.html",
+        "images/detail.html",
         {
             "section": "images",
             "image": image,
@@ -89,10 +78,10 @@ def image_like(request: HttpRequest) -> JsonResponse:
             image = Image.objects.get(id=image_id)
             if action == "like":
                 image.users_like.add(request.user)
-                create_action(request.user, "Like", image)
+                create_action(request.user, "Like", image)  # type: ignore
             else:
                 image.users_like.remove(request.user)
-                create_action(request.user, "Dislike", image)
+                create_action(request.user, "Dislike", image)  # type: ignore
             users_like = [
                 {
                     "first_name": user.first_name,
@@ -115,15 +104,7 @@ def image_list(request: HttpRequest) -> HttpResponse:
     page = request.GET.get("page")
     images_only = request.GET.get("images_only")
     try:
-<<<<<<< HEAD
-        images = paginator.page(page)  # type: ignore
-    except PageNotAnInteger:
-        images = paginator.page(1)
-=======
         images = paginator.page(page or 1)
-    # except PageNotAnInteger:
-    #     images = paginator.page(1)
->>>>>>> develop
     except EmptyPage:
         if images_only:
             return HttpResponse("")
@@ -131,11 +112,11 @@ def image_list(request: HttpRequest) -> HttpResponse:
     if images_only:
         return render(
             request,
-            "images/image/list_images.html",
+            "images/list_images.html",
             {"section": "images", "images": images},
         )
     return render(
         request,
-        "images/image/list.html",
+        "images/list.html",
         {"section": "images", "images": images},
     )

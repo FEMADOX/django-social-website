@@ -21,7 +21,10 @@ class Action(models.Model):
         related_name="target_obj",
         on_delete=models.CASCADE,
     )
-    target_id: models.PositiveIntegerField = models.PositiveIntegerField(blank=True, null=True)
+    target_id: models.PositiveIntegerField = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+    )
     target = GenericForeignKey("target_ct", "target_id")
 
     class Meta:
@@ -30,3 +33,6 @@ class Action(models.Model):
             models.Index(fields=["target_ct", "target_id"]),
         ]
         ordering = ["-created"]
+
+    def __str__(self) -> str:
+        return f"Action by {self.user} - {self.verb} on {self.created}"
