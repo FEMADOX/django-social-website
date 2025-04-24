@@ -10,14 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-import os
 from pathlib import Path
 
-import dj_database_url  # type: ignore
+import dj_database_url
+from decouple import config
 from django.urls import reverse_lazy
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,26 +24,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-+$+4%-emj*37q9^y3i@ky25)xk@*ytxr)76sfh6d+(j)!j7j*0"
+SECRET_KEY = config("SECRET_KEY", cast=str)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-]
+ALLOWED_HOSTS: str = config("ALLOWED_HOSTS").split(",")  # type: ignore
 
-CORS_ORIGIN_WHITELIST = [
-    "https://127.0.0.1:8000",
-]
+CORS_ORIGIN_WHITELIST: str = config("CORS_ORIGIN_WHITELIST").split(",")  # type: ignore
+CSRF_TRUSTED_ORIGINS: str = config("CSRF_TRUSTED_ORIGINS").split(",")  # type: ignore
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://127.0.0.1:8000",
-]
 
 # Application definition
 
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
     "account",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -54,7 +46,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "whitenoise.runserver_nostatic",
     "social_django",
     "django_extensions",
     "images",
@@ -80,7 +71,7 @@ ROOT_URLCONF = "Bookmarks.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "account/templates/"],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -100,22 +91,7 @@ WSGI_APPLICATION = "Bookmarks.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-
-# Storages
-
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
+    "default": dj_database_url.config(default=config("DATABASE_URL")),  # type: ignore
 }
 
 
@@ -124,7 +100,8 @@ STORAGES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation."
+        "UserAttributeSimilarityValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -152,18 +129,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+WHITENOISE_USE_FINDERS = True
+STORAGES = {
+    "default": {
+        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 STATIC_URL = "static/"
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "Bookmarks/static"),
-]
-
-STATIC_ROOT = os.path.join(BASE_DIR, "Bookmarks/staticfiles")
-
-
-# Media files
-# ______________________________________________________________________
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "media/"
@@ -190,14 +168,11 @@ AUTHENTICATION_BACKENDS = [
     "social_core.backends.google.GoogleOAuth2",
 ]
 
-SOCIAL_AUTH_TWITTER_KEY = "lBmGU72ddStwJWXq0aPWsu61O"
-SOCIAL_AUTH_TWITTER_SECRET = "UH9fDashSzghjATR04wbyprcJAU0shV9OhwPD9IrCtmJLbSGTu"
+SOCIAL_AUTH_TWITTER_KEY = config("SOCIAL_AUTH_TWITTER_KEY", cast=str)
+SOCIAL_AUTH_TWITTER_SECRET = config("SOCIAL_AUTH_TWITTER_SECRET", cast=str)
 
-CLIENT_TWITTER_ID = "bDYxdnhxNGpvWG1Xb2NtaHRZZV86MTpjaQ"
-CLIENT_TWITTER_ID_SECRET = "wyHraIc8pAbPkzYmh8Mc2rB-Me64iop2hKAU89QaNTUl_UuZs7"
-
-SOCIAL_AUTH_GOOGEL_OAUTH2_KEY = "yf9ABbx3mtD7Nh9EbjvkaTQMZ"
-SOCIAL_AUTH_GOOGEL_OAUTH2_SECRET = "jdEbEFXBTS4zLDnqIaR2q65Tl8DgQl1GzcirryHwM0DZB41pxN"
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", cast=str)
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET", cast=str)
 
 SOCIAL_AUTH_PIPELINE = [
     "social_core.pipeline.social_auth.social_details",
@@ -212,6 +187,25 @@ SOCIAL_AUTH_PIPELINE = [
     "social_core.pipeline.user.user_details",
 ]
 
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "file": {
+#             "level": "DEBUG",
+#             "class": "logging.FileHandler",
+#             "filename": os.path.join(BASE_DIR, "django_debug.log"),
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["file"],
+#             "level": "DEBUG",
+#             "propagate": True,
+#         },
+#     },
+# }
+
 ABSOLUTE_URL_OVERRIDES = {
-    "auth.user": lambda u: reverse_lazy("user_detail", args=[u.username])
+    "auth.user": lambda u: reverse_lazy("user_detail", args=[u.username]),
 }

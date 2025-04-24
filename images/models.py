@@ -33,16 +33,16 @@ class Image(models.Model):
         ]
         ordering = ["-created_at"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:  # noqa: ANN002, ANN003
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse(
             "images:detail",
-            args=[self.id, self.slug],
+            args=[self.pk, self.slug],
         )

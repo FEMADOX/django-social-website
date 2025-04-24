@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.8" />
+    {% load static %}
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <div id="header">
+      <a href="{% url 'dashboard' %}"><span class="logo">Bookmarks</span></a>
+      {% if request.user.is_authenticated %}
+        <ul class="menu">
+          <li {% if section == "dashboard" %} class="selected" {% endif %}><a href="{% url 'dashboard' %}">My dashboard</a></li>
+          <li {% if section == "images" %} class="selected" {% endif %}><a href="{% url 'images:list' %}">Images</a></li>
+          <li {% if section == "people" %} class="selected" {% endif %}><a href="{% url 'user_list' %}">People</a></li>
+        </ul>
+      {% endif %}
+      <span class="user">
+        {% if request.user.is_authenticated %}
+          <form action="{% url 'logout' %}" method="post">{% csrf_token %}
+            Hello {{request.user.first_name|default:request.user.username}}&nbsp;
+            <button type="submit">Logout</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}">Log-in</a>
+        {% endif %}
+      </span>
+    </div>
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{message.tags}}">
+            {{message|safe}}
+            <a href="#" class="close">x</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <div id="content">{% block content %}{% endblock content %}</div>
+    <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    <script>
+      const csrftoken = Cookies.get("csrftoken");
+      document.addEventListener("DOMContentLoaded", (event) => {
+        {% block domready %} 
+        {% endblock domready %}
+      })
+    </script>
+  </body>
+</html>
