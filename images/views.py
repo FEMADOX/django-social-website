@@ -1,7 +1,20 @@
+from __future__ import annotations
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+<<<<<<< HEAD
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpRequest, HttpResponse, JsonResponse
+=======
+from django.core.paginator import EmptyPage, Paginator
+from django.http import (
+    HttpRequest,
+    HttpResponse,
+    HttpResponsePermanentRedirect,
+    HttpResponseRedirect,
+    JsonResponse,
+)
+>>>>>>> develop
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
@@ -40,8 +53,13 @@ def image_create(
     )
 
 
+<<<<<<< HEAD
 def image_detail(request: HttpRequest, img_id: int, slug: str) -> HttpResponse:
     image = get_object_or_404(Image, pk=img_id, slug=slug)
+=======
+def image_detail(request: HttpRequest, image_id: int, slug: str) -> HttpResponse:
+    image = get_object_or_404(Image, id=image_id, slug=slug)
+>>>>>>> develop
     viewed_images = request.session.get("viewed_images", [])
 
     if image.pk not in viewed_images:
@@ -97,9 +115,15 @@ def image_list(request: HttpRequest) -> HttpResponse:
     page = request.GET.get("page")
     images_only = request.GET.get("images_only")
     try:
+<<<<<<< HEAD
         images = paginator.page(page)  # type: ignore
     except PageNotAnInteger:
         images = paginator.page(1)
+=======
+        images = paginator.page(page or 1)
+    # except PageNotAnInteger:
+    #     images = paginator.page(1)
+>>>>>>> develop
     except EmptyPage:
         if images_only:
             return HttpResponse("")
