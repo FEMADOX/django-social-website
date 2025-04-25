@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "cloudinary_storage",
+    "cloudinary",
     "social_django",
     "django_extensions",
     "images",
@@ -89,10 +91,19 @@ WSGI_APPLICATION = "Bookmarks.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+LOCAL_DATABASE = config("LOCAL_DATABASE", cast=bool)
 
-DATABASES = {
-    "default": dj_database_url.config(default=config("DATABASE_URL")),  # type: ignore
-}
+if LOCAL_DATABASE:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        },
+    }
+else:
+    DATABASES = {
+        "default": dj_database_url.config(default=config("DATABASE_URL")),  # type: ignore
+    }
 
 
 # Password validation
@@ -143,8 +154,16 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
-MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": config("CLOUD_NAME", cast=str),
+    "API_KEY": config("CLOUD_API_KEY", cast=str),
+    "API_SECRET": config("CLOUD_API_SECRET", cast=str),
+}
 
 
 # Default primary key field type

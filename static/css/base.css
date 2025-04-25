@@ -307,6 +307,15 @@ a.follow {
     margin: 0 10px 10px 10px;
     border-top: 8px solid #12c064;
     background: #eee;
+    text-align: center;
+    transition: background 0.3s ease-out, border-top 0.3s ease-out;
+}
+
+#image-list .image:hover,
+#image-list .image:hover img {
+    background: #cfcfcf;
+    border-top: 15px solid #12c064;
+    transition: background 0.3s ease-in, border-top 0.4s ease-in;
 }
 
 #image-list img {
@@ -341,6 +350,12 @@ a.follow {
     height: 180px;
     border-radius: 50%;
     margin-bottom: 20px;
+    transition: background-color 0.2s ease-out
+}
+
+#people-list img:hover {
+    background-color: gainsboro;
+    transition: background-color 0.2s ease-in;
 }
 
 #people-list .user {

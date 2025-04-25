@@ -18,8 +18,8 @@ class Image(models.Model):
         blank=True,
     )
     title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, blank=True)
-    url = models.URLField(max_length=2000)
+    slug = models.SlugField(max_length=200, blank=True, auto_created=True)
+    url = models.URLField(max_length=2000, blank=True)
     image = models.ImageField(upload_to="images/%Y/%m/%d")
     description = models.TextField(blank=True)
     created_at = models.DateField(auto_now_add=True)
