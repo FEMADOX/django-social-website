@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
-import dj_database_url
 from decouple import config
 from django.urls import reverse_lazy
 
@@ -90,9 +89,6 @@ WSGI_APPLICATION = "Bookmarks.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     "default": dj_database_url.config(default=config("DATABASE_URL")),  # type: ignore
-# }
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -101,9 +97,8 @@ DATABASES = {
         "PASSWORD": "HHbjaqHCtNQKzsvIqyGbULgALKwBqWuB",
         "HOST": "caboose.proxy.rlwy.net",
         "PORT": "11464",
-    }
+    },
 }
-
 
 
 # Password validation
