@@ -1,7 +1,15 @@
+from __future__ import annotations
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import JsonResponse
+from django.http import (
+    HttpRequest,
+    HttpResponse,
+    HttpResponsePermanentRedirect,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
@@ -19,16 +27,18 @@ from action.utils import create_action
 
 
 @login_required
-def dashboard(request):
+def dashboard(request: HttpRequest) -> HttpResponse:
     # Display all actions by default
     actions = Action.objects.exclude(user=request.user)
-    following_ids = request.user.following.values_list("id", flat=True)
+    following_ids = request.user.following.values_list("id", flat=True)  # type: ignore
     if following_ids:
         # If user is following others, retrieve only their actions
         actions = actions.filter(user_id__in=following_ids)
-    actions = actions.select_related("user", "user__profile")[:10]  # One to Many relation
+    actions = actions.select_related("user", "user__profile")[
+        :10
+    ]  # One to Many relation
     # actions = actions.prefetch_related("target")[:10] <= Many to Many relation
-    
+
     return render(
         request,
         "account/dashboard.html",
@@ -39,7 +49,7 @@ def dashboard(request):
     )
 
 
-def register(request):
+def register(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         user_form = UserRegistrationForm(request.POST, request.FILES)
         if user_form.is_valid():
@@ -47,7 +57,7 @@ def register(request):
             new_user.set_password(user_form.cleaned_data["password"])
             new_user.save()
             Profile.objects.create(user=new_user)
-            create_action(request.user, "Create account")
+            # create_action(request.user, "Create account")
             messages.success(request, "Account has been created successfully")
             return render(request, "account/register_done.html", {"new_user": new_user})
     else:
@@ -56,31 +66,35 @@ def register(request):
 
 
 @login_required
-def edit(request):
-    if request.method == "POST" and request.user.profile != None:
-        user_form = UserEditForm(instance=request.user, data=request.POST)
+def edit(
+    request: HttpRequest,
+) -> HttpResponse | HttpResponseRedirect | HttpResponsePermanentRedirect:
+    if request.method == "POST" and request.user.profile is not None:  # type: ignore
+        user_form = UserEditForm(instance=request.user, data=request.POST)  # type: ignore
         profile_form = ProfileEditForm(
-            instance=request.user.profile, data=request.POST, files=request.FILES
+            instance=request.user.profile,  # type: ignore
+            data=request.POST,
+            files=request.FILES,
         )
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            create_action(request.user, "Edit profile", profile_form)
+            create_action(request.user, "Edit profile", profile_form)  # type: ignore
             messages.success(request, "Profile has been updated successfully")
             return render(request, "account/dashboard.html")
-        else:
-            messages.error(request, "Error updating your profile")
+        messages.error(request, "Error updating your profile")
     else:
-        user_form = UserEditForm(instance=request.user)
+        user_form = UserEditForm(instance=request.user)  # type: ignore
 
-        #! In case of user without profile
+        # ! In case of user without profile
         try:
-            profile_form = ProfileEditForm(instance=request.user.profile)
-        except Exception:
+            profile_form = ProfileEditForm(instance=request.user.profile)  # type: ignore
+        except Exception:  # noqa: BLE001
             Profile.objects.create(user=request.user)
-            profile_form = ProfileEditForm(instance=request.user.profile)
+            profile_form = ProfileEditForm(instance=request.user.profile)  # type: ignore
             return redirect(
-                request, "account/edit_new_profile.html", {"profile_form": profile_form}
+                "account/edit_new_profile.html",
+                {"profile_form": profile_form},
             )
 
     return render(
@@ -94,7 +108,7 @@ def edit(request):
 
 
 @login_required
-def user_list(request):
+def user_list(request: HttpRequest) -> HttpResponse:
     users = User.objects.filter(is_active=True)
     return render(
         request,
@@ -107,7 +121,7 @@ def user_list(request):
 
 
 @login_required
-def user_detail(request, username: str):
+def user_detail(request: HttpRequest, username: str) -> HttpResponse:
     user = get_object_or_404(
         User,
         username=username,
@@ -125,7 +139,7 @@ def user_detail(request, username: str):
 
 @login_required
 @require_POST
-def user_follow(request):
+def user_follow(request: HttpRequest) -> JsonResponse:
     user_id = request.POST.get("id")
     action = request.POST.get("action")
     if user_id and action:
@@ -133,10 +147,10 @@ def user_follow(request):
             user = User.objects.get(id=user_id)
             if action == "follow":
                 Contact.objects.get_or_create(user_from=request.user, user_to=user)
-                create_action(request.user, "Follow", user)
+                create_action(request.user, "Follow", user)  # type: ignore
             else:
                 Contact.objects.filter(user_from=request.user, user_to=user).delete()
-                create_action(request.user, "Unfollow", user)
+                create_action(request.user, "Unfollow", user)  # type: ignore
             return JsonResponse({"status": "ok"})
         except Contact.DoesNotExist:
             return JsonResponse({"status": "error"})

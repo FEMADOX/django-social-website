@@ -8,6 +8,9 @@ staticfiles
 .env
 media
 django_debug.log
+<<<<<<< HEAD
+venv
+=======
 
 # Logs
 logs
@@ -37,17 +40,33 @@ dist-ssr
 
 # DJANGO
 staticfiles
+>>>>>>> develop
 
 # Created by https://www.toptal.com/developers/gitignore/api/django
 # Edit at https://www.toptal.com/developers/gitignore?templates=django
 
 # User
+<<<<<<< HEAD
+staticfiles
+*.db
+migrations/
+requirements-dev.txt
+*.code-workspace
+.vscode
+edteam-cursodjango-main.zip
+venv/
+Recursos del curso/
+IMAGENES_TIENDA/
+run_tests.py
+run_ruff.py
+=======
 *.db
 migrations/
 *.code-workspace
 run_tests.py
 run_ruff.py
 .venv
+>>>>>>> develop
 
 
 ### Django ###
@@ -58,7 +77,10 @@ __pycache__/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+<<<<<<< HEAD
+=======
 media
+>>>>>>> develop
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
@@ -220,4 +242,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+<<<<<<< HEAD
 # End of https://www.toptal.com/developers/gitignore/api/django
+=======
+# End of https://www.toptal.com/developers/gitignore/api/django
+>>>>>>> develop
