@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+import dj_database_url
 from decouple import config
 from django.urls import reverse_lazy
 
@@ -90,14 +91,7 @@ WSGI_APPLICATION = "Bookmarks.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "railway",
-        "USER": "postgres",
-        "PASSWORD": "HHbjaqHCtNQKzsvIqyGbULgALKwBqWuB",
-        "HOST": "caboose.proxy.rlwy.net",
-        "PORT": "11464",
-    },
+    "default": dj_database_url.config(default=config("DATABASE_URL")),  # type: ignore
 }
 
 
@@ -141,7 +135,7 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
