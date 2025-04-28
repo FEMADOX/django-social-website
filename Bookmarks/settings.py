@@ -95,17 +95,10 @@ WSGI_APPLICATION = "Bookmarks.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 LOCAL_DATABASE = config("LOCAL_DATABASE", cast=bool)
 
-if LOCAL_DATABASE:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        },
-    }
-else:
-    DATABASES = {
-        "default": dj_database_url.config(default=config("DATABASE_URL")),  # type: ignore
-    }
+
+DATABASES = {
+    "default": dj_database_url.config(default=config("DATABASE_URL")),  # type: ignore
+}
 
 
 # Password validation
