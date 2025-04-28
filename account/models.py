@@ -1,3 +1,4 @@
+from cloudinary.models import CloudinaryField
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
@@ -15,9 +16,11 @@ class Profile(models.Model):
         blank=True,
         null=True,
     )
-    photo = models.ImageField(
-        upload_to="Social_Website/media/users/",
+    image = CloudinaryField(
+        "imgage",
         blank=True,
+        folder="Social_Website/media/users/",
+        default="",
     )
 
     def __str__(self) -> str:
