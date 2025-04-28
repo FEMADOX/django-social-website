@@ -16,7 +16,7 @@ class Profile(models.Model):
         blank=True,
         null=True,
     )
-    image = CloudinaryField(
+    photo = CloudinaryField(
         "imgage",
         blank=True,
         folder="Social_Website/media/users/",
