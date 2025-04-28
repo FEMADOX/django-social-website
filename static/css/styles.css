@@ -5,3 +5,9 @@
 h2.welcom_subtitle {
   margin-bottom: 30px;
 }
+
+img.cloudinary-user-detail {
+  max-width: 300px;
+  height: 300px;
+  border-radius: 50%;
+}

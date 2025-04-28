@@ -25,7 +25,7 @@ class Image(models.Model):
         "imgage",
         blank=True,
         folder="Social_Website/media/images/",
-        default="",
+        default="https://res.cloudinary.com/dd1qoripz/image/upload/v1745813449/No_Image_Available_wvog0c.jpg",
     )
     description = models.TextField(blank=True)
     created_at = models.DateField(auto_now_add=True)

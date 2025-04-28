@@ -19,8 +19,9 @@ class Profile(models.Model):
     photo = CloudinaryField(
         "imgage",
         blank=True,
+        null=True,
         folder="Social_Website/media/users/",
-        default="",
+        default="https://res.cloudinary.com/dd1qoripz/image/upload/v1745813449/No_Image_Available_wvog0c.jpg",
     )
 
     def __str__(self) -> str:
