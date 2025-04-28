@@ -10,8 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
+import cloudinary
 import dj_database_url
 from decouple import config
 from django.urls import reverse_lazy
@@ -50,8 +52,8 @@ INSTALLED_APPS = [
     "cloudinary",
     "social_django",
     "django_extensions",
-    "images",
     "easy_thumbnails",
+    "images",
     "action",
 ]
 
@@ -155,15 +157,13 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
 
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": config("CLOUD_NAME", cast=str),
-    "API_KEY": config("CLOUD_API_KEY", cast=str),
-    "API_SECRET": config("CLOUD_API_SECRET", cast=str),
-}
+cloudinary.config(
+    cloud_name=config("CLOUD_NAME", cast=str),
+    api_key=config("CLOUD_API_KEY", cast=str),
+    api_secret=config("CLOUD_API_SECRET", cast=str),
+    secure=True,
+)
 
 
 # Default primary key field type
@@ -206,24 +206,30 @@ SOCIAL_AUTH_PIPELINE = [
     "social_core.pipeline.user.user_details",
 ]
 
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {
-#         "file": {
-#             "level": "DEBUG",
-#             "class": "logging.FileHandler",
-#             "filename": os.path.join(BASE_DIR, "django_debug.log"),
-#         },
-#     },
-#     "loggers": {
-#         "django": {
-#             "handlers": ["file"],
-#             "level": "DEBUG",
-#             "propagate": True,
-#         },
-#     },
-# }
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "django_debug.log"),
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "ERROR",
+            "propagate": True,
+        },
+    },
+    # Auto delete old log file
+    "filters": {
+        "require_debug_false": {
+            "()": "django.utils.log.RequireDebugFalse",
+        },
+    },
+}
 
 ABSOLUTE_URL_OVERRIDES = {
     "auth.user": lambda u: reverse_lazy("user_detail", args=[u.username]),

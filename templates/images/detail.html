@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
+{% comment %} {% load thumbnail %} {% endcomment %}
 
-{% block title %}{{image.title}}{% endblock title %}
+{% block title %}{{ image.title }}{% endblock title %}
 
 {% block content %}
   <h1>{{image.title}}</h1>
-  {% load thumbnail %}
   <a href="{{image.image.url}}">
-    <img src="{% thumbnail image.image 300x0 %}" alt="" class="image-detail">
+    {% comment %} <img src="{% thumbnail image.image 300x0 %}" alt="" class="image-detail"> {% endcomment %}
+    <img src="{{ image.image.url }}" alt="" class="image-detail">
   </a>
   {% with total_likes=image.users_like.count users_like=image.users_like.all %}
     <div class="image-info">
@@ -17,7 +18,7 @@
         <span class="count">
           {{total_views}} view{{total_views|pluralize}}
         </span>
-        <a href="#" data-id="{{image.id}}" data-action="{% if request.user in users_like %}dis{% endif %}like"
+        <a href="#" data-id="{{ image.id }}" data-action="{% if request.user in users_like %}dis{% endif %}like"
           class="like button">
           {% if request.user not in users_like %}
           Like

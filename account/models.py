@@ -16,7 +16,7 @@ class Profile(models.Model):
         null=True,
     )
     photo = models.ImageField(
-        upload_to="users/%Y/%m/%d",
+        upload_to="Social_Website/media/users/",
         blank=True,
     )
 

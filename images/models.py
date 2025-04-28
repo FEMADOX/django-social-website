@@ -1,3 +1,4 @@
+from cloudinary.models import CloudinaryField
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -17,10 +18,15 @@ class Image(models.Model):
         related_name="images_liked",
         blank=True,
     )
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, default="")
     slug = models.SlugField(max_length=200, blank=True, auto_created=True)
     url = models.URLField(max_length=2000, blank=True)
-    image = models.ImageField(upload_to="images/%Y/%m/%d")
+    image = CloudinaryField(
+        "imgage",
+        blank=True,
+        folder="Social_Website/media/images/",
+        default="",
+    )
     description = models.TextField(blank=True)
     created_at = models.DateField(auto_now_add=True)
     total_likes = models.PositiveIntegerField(default=0)
