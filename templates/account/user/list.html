@@ -9,7 +9,8 @@
     {% for user in users %}
       {% if user.username != 'root' %}
         <div class="user">
-          <a href="{{ user.get_absolute_url }}"><img src="{% thumbnail user.profile.photo 180x180 %}" alt="" /></a>
+          <!-- <a href="{{ user.get_absolute_url }}"><img src="{% thumbnail user.profile.photo 180x180 %}" alt="" /></a> -->
+          <a href="{{ user.get_absolute_url }}"><img src="{{  user.profile.photo.url }}" alt="" /></a>
           <div class="info">
             <a href="{{ user.get_absolute_url }}" class="title">
               {% if request.user == user %}
