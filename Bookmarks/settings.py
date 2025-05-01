@@ -16,7 +16,11 @@ from pathlib import Path
 import cloudinary
 import dj_database_url
 from decouple import config
+
+# from django.core.mail import send_mail
 from django.urls import reverse_lazy
+
+# from account import test_send_mail
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -189,6 +193,23 @@ DEFAULT_FROM_EMAIL = "FENYXZ"
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", cast=str)
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", cast=str)
 
+# EMAIL_TEST = config("EMAIL_TEST", cast=str)  # For testing purposes
+
+# test_send_mail.test_smtp_connection()
+
+# send_mail(
+#     "Prueba de correo",
+#     "Este es un correo de prueba enviado desde Railway.",
+#     EMAIL_HOST_USER,  # Remitente
+#     [EMAIL_TEST],  # Destinatario
+#     auth_user=EMAIL_HOST_USER,
+#     auth_password=EMAIL_HOST_PASSWORD,
+#     connection=EMAIL_BACKEND,
+#     fail_silently=False,
+# )
+# print("Correo enviado exitosamente")
+
+# test_send_mail.test_email()
 
 # AUTHENTICATION
 # -------------------------------------------------------------------------
