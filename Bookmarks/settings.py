@@ -34,8 +34,8 @@ DEBUG = config("DEBUG", cast=bool)
 
 ALLOWED_HOSTS: str = config("ALLOWED_HOSTS").split(",")  # type: ignore
 
-# CORS_ORIGIN_WHITELIST: str = config("CORS_ORIGIN_WHITELIST").split(",")  # type: ignore
-# CSRF_TRUSTED_ORIGINS: str = config("CSRF_TRUSTED_ORIGINS").split(",")  # type: ignore
+CORS_ORIGIN_WHITELIST: str = config("CORS_ORIGIN_WHITELIST").split(",")  # type: ignore
+CSRF_TRUSTED_ORIGINS: str = config("CSRF_TRUSTED_ORIGINS").split(",")  # type: ignore
 
 
 # Application definition
