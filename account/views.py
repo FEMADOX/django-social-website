@@ -179,3 +179,5 @@ def user_follow(request: HttpRequest) -> JsonResponse:
 # //     else:
 # //         form = LoginForm()
 # //     return render(request, "account/login.html", {"form": form})
+
+# def password_reset(request: HttpRequest) -> HttpResponse:

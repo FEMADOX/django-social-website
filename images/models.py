@@ -22,10 +22,17 @@ class Image(models.Model):
     slug = models.SlugField(max_length=200, blank=True, auto_created=True)
     url = models.URLField(max_length=2000, blank=True)
     image = CloudinaryField(
-        "imgage",
+        "image",
         blank=True,
         folder="Social_Website/media/images/",
         default="https://res.cloudinary.com/dd1qoripz/image/upload/v1745813449/No_Image_Available_wvog0c.jpg",
+        transformation={
+            "width": 300,
+            "height": 300,
+            "crop": "fill",
+            "quality": "auto",
+            "fetch_format": "auto",
+        },
     )
     description = models.TextField(blank=True)
     created_at = models.DateField(auto_now_add=True)

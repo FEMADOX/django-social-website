@@ -16,6 +16,7 @@ from pathlib import Path
 import cloudinary
 import dj_database_url
 from decouple import config
+from django.core.mail import get_connection
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -33,8 +34,8 @@ DEBUG = config("DEBUG", cast=bool)
 
 ALLOWED_HOSTS: str = config("ALLOWED_HOSTS").split(",")  # type: ignore
 
-CORS_ORIGIN_WHITELIST: str = config("CORS_ORIGIN_WHITELIST").split(",")  # type: ignore
-CSRF_TRUSTED_ORIGINS: str = config("CSRF_TRUSTED_ORIGINS").split(",")  # type: ignore
+# CORS_ORIGIN_WHITELIST: str = config("CORS_ORIGIN_WHITELIST").split(",")  # type: ignore
+# CSRF_TRUSTED_ORIGINS: str = config("CSRF_TRUSTED_ORIGINS").split(",")  # type: ignore
 
 
 # Application definition
@@ -93,12 +94,20 @@ WSGI_APPLICATION = "Bookmarks.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+
 LOCAL_DATABASE = config("LOCAL_DATABASE", cast=bool)
 
-
-DATABASES = {
-    "default": dj_database_url.config(default=config("DATABASE_URL")),  # type: ignore
-}
+if LOCAL_DATABASE:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        },
+    }
+else:
+    DATABASES = {
+        "default": dj_database_url.config(default=config("DATABASE_URL")),  # type: ignore
+    }
 
 
 # Password validation
@@ -135,7 +144,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+
 WHITENOISE_USE_FINDERS = True
+
 STORAGES = {
     "default": {
         "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
@@ -168,10 +179,27 @@ LOGIN_REDIRECT_URL = "dashboard"
 LOGIN_URL = "login"
 LOGOUT_URL = "logout"
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL settings
+# -------------------------------------------------------------------------
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "FENYXZ"
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+
+# send emails directo to console
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# send emails to file
+# EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+# EMAIL_FILE_PATH = "emails/"
 
 
-# Authentication
+# AUTHENTICATION
 # -------------------------------------------------------------------------
 
 AUTHENTICATION_BACKENDS = [
@@ -203,6 +231,14 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {
+        "mail_admins": {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler",
+        },
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+        },
         "file": {
             "level": "ERROR",
             "class": "logging.FileHandler",
