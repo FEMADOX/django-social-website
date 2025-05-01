@@ -16,7 +16,6 @@ from pathlib import Path
 import cloudinary
 import dj_database_url
 from decouple import config
-from django.core.mail import get_connection
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -187,8 +186,8 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "FENYXZ"
-EMAIL_HOST_USER = config("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", cast=str)
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", cast=str)
 
 
 # AUTHENTICATION
