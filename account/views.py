@@ -87,7 +87,7 @@ def edit(
             # user_profile.date_of_birth = profile_data["birth"]
             # user_profile.save()
 
-            create_action(request.user, "Edit profile", profile_form)  # type: ignore
+            # create_action(request.user, "Edit profile", profile_form)  # type: ignore
             messages.success(request, "Profile has been updated successfully")
             return render(request, "account/dashboard.html")
 
