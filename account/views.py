@@ -70,7 +70,7 @@ def edit(
     request: HttpRequest,
 ) -> HttpResponse | HttpResponseRedirect | HttpResponsePermanentRedirect:
     if request.method == "POST" and request.user.profile is not None:  # type: ignore
-        user_form = UserEditForm(instance=request.user, data=request.POST)  # type: ignore
+        user_form = UserEditForm(instance=request.user, data=request.POST)
         profile_form = ProfileEditForm(
             instance=request.user.profile,  # type: ignore
             data=request.POST,
@@ -79,23 +79,39 @@ def edit(
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+
+            # Update user profile data
+            # profile_data = profile_form.cleaned_data
+            # user_profile = Profile.objects.get(user=request.user)
+            # user_profile.photo = profile_data["photo"]
+            # user_profile.date_of_birth = profile_data["birth"]
+            # user_profile.save()
+
             create_action(request.user, "Edit profile", profile_form)  # type: ignore
             messages.success(request, "Profile has been updated successfully")
             return render(request, "account/dashboard.html")
-        messages.error(request, "Error updating your profile")
-    else:
-        user_form = UserEditForm(instance=request.user)  # type: ignore
 
-        # ! In case of user without profile
-        try:
-            profile_form = ProfileEditForm(instance=request.user.profile)  # type: ignore
-        except Exception:  # noqa: BLE001
-            Profile.objects.create(user=request.user)
-            profile_form = ProfileEditForm(instance=request.user.profile)  # type: ignore
-            return redirect(
-                "account/edit_new_profile.html",
-                {"profile_form": profile_form},
-            )
+        return messages.error(request, "Error updating your profile")  # type: ignore
+
+    # if request.method == "GET":
+    user_form = UserEditForm(instance=request.user)
+
+    # ! In case of user without profile
+    try:
+        profile_form = ProfileEditForm(instance=request.user.profile)  # type: ignore
+        #     initial={
+        #         "photo": user_profile.photo,
+        #         "birth": user_profile.date_of_birth,
+        #     },
+        # )  # type: ignore
+    except Exception:  # noqa: BLE001
+        user_profile = Profile.objects.create(user=request.user)
+        profile_form = ProfileEditForm(instance=user_profile)  # type: ignore
+        # profile_form = ProfileEditForm(instance=request.user.profile)  # type: ignore
+        return redirect(
+            "account/edit_new_profile.html",
+            {"profile_form": profile_form},
+        )
 
     return render(
         request,

@@ -54,6 +54,9 @@ class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ["date_of_birth", "photo"]
+        widgets = {
+            "date_of_birth": forms.DateInput(attrs={"type": "date"}),
+        }
 
 
 class CustomPasswordResetForm(PasswordResetForm):

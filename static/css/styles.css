@@ -12,38 +12,20 @@ img.cloudinary-user-detail {
   border-radius: 50%;
 }
 
-/* SEND MAIL PAGE */
-h1.send_mail_page {
-  margin: 10px auto 20px auto;
-  color: green;
+label[for="photo-clear_id"] {
+  float: none;
+}
+
+input#photo-clear_id {
+  display: inline;
+  float: none;
+}
+
+#id_photo {
+  float: inherit
+}
+
+label[for="id_photo"] {
   display: block;
-}
-
-input.send_mail_page {
-  width: 300px;
-  height: 25px;
-  display: block;
-  margin-bottom: 20px;
-}
-
-div.send_mail_page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-textarea.send_mail_page {
-  resize: none;
-  width: 302px;
-  height: 100px;
-  margin-bottom: 10px;
-}
-
-input[type="submit"].send_mail_page {
-  width: 150px;
-  height: 30px;
-  background-color: green;
-  color: white;
-  border: none;
-  margin: 0 auto;
+  margin: 0.9rem 0.5rem 1rem 0;
 }
