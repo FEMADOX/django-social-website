@@ -1,6 +1,13 @@
+import logging
+import smtplib
+from typing import Any
+
 from django import forms
+from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 from account.models import Profile
 
@@ -62,3 +69,77 @@ class CustomPasswordResetForm(PasswordResetForm):
             },
         ),
     )
+
+    def send_mail(  # noqa: PLR0913, PLR0917
+        self,
+        subject_template_name: str,
+        email_template_name: str,
+        context: dict[str, Any],
+        from_email: str | None,
+        to_email: str,
+        html_email_template_name: str | None = None,
+    ) -> None:
+        subject = "Password Reset Email"
+        message = ""
+        html_email_template_name = render_to_string(
+            "registration/password_reset_email.html",
+            context,
+        )
+        to_email = self.cleaned_data["email"]
+        try:
+            send_mail(
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [to_email],
+                fail_silently=False,
+                html_message=html_email_template_name,
+            )
+        except smtplib.SMTPException:
+            logger = logging.getLogger(__name__)
+            logger.exception("SMTP error occurred while sending email")
+
+        # if request.method == "POST":
+        #     address = request.POST.get("address")
+        #     subject = request.POST.get("subject")
+        #     message = request.POST.get("message")
+
+        # return super().send_mail(
+        #     subject_template_name,
+        #     email_template_name,
+        #     context,
+        #     from_email,
+        #     to_email,
+        #     html_email_template_name,
+        # )
+
+    # def send_mail_custom(
+    #     self,
+    #     request: HttpRequest,
+    # ) -> None:
+    #     context = {}
+
+    # if request.method == "POST":
+    #     address = request.POST.get("address")
+    #     subject = request.POST.get("subject")
+    #     message = request.POST.get("message")
+
+    #         if address and subject and message:
+    #             try:
+    #                 send_mail(subject, message, settings.EMAIL_HOST_USER, [address])
+    #                 context["result"] = "Email sent successfully"
+    #             except Exception as e:  # noqa: BLE001
+    #                 context["result"] = f"Error sending email: {e}"
+    #         else:
+    #             context["result"] = "All fields are required"
+
+    # return render(request, "account/send_mail_page.html", context)
+
+    # return super().send_mail(
+    #     subject_template_name,
+    #     email_template_name,
+    #     context,
+    #     from_email,
+    #     to_email,
+    #     html_email_template_name,
+    # )
