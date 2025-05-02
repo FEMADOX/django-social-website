@@ -1,5 +1,4 @@
 import logging
-import smtplib
 from typing import Any
 
 from django import forms
@@ -87,6 +86,9 @@ class CustomPasswordResetForm(PasswordResetForm):
         )
         to_email = self.cleaned_data["email"]
         try:
+            print(
+                f"Subject: {subject}\nHtml message:\n{html_email_template_name}From email: {settings.EMAIL_HOST_USER}\nTo email: {to_email}",
+            )
             send_mail(
                 subject,
                 message,
@@ -94,10 +96,15 @@ class CustomPasswordResetForm(PasswordResetForm):
                 [to_email],
                 fail_silently=False,
                 html_message=html_email_template_name,
-            )
-        except smtplib.SMTPException:
+            ) 
+        except Exception as error:
             logger = logging.getLogger(__name__)
-            logger.exception("SMTP error occurred while sending email")
+            logger.exception(f"SMTP error occurred while sending email {error}")
+            print(f"SMTP error occurred while sending email {error}")
+
+        # except smtplib.SMTPException:
+        #     logger = logging.getLogger(__name__)
+        #     logger.exception("SMTP error occurred while sending email")
 
         # if request.method == "POST":
         #     address = request.POST.get("address")
