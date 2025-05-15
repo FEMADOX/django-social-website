@@ -1,9 +1,6 @@
-{% comment %} {% load thumbnail %} {% endcomment %}
-
 {% for image in images %}
   <div class="image">
     <a href="{{ image.get_absolute_url }}">
-      {% comment %} {% thumbnail image.image 500x500 crop='smart' as im %} {% endcomment %}
       <a href="{{ image.get_absolute_url }}"><img src="{{ image.image.url }}" alt="" /></a>
     </a>
     <div class="info">

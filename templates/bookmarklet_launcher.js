@@ -1,5 +1,3 @@
-// import bookmarklet from 'static/js/bookmarklet.js';
-
 (function () {
     if (!window.bookmarklet) {
         bookmarklet_js = document.body.appendChild(document.createElement('script'));

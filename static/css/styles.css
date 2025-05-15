@@ -22,7 +22,8 @@ input#photo-clear_id {
 }
 
 #id_photo {
-  float: inherit
+  float: inherit;
+  color: black;
 }
 
 label[for="id_photo"] {

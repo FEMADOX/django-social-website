@@ -16,12 +16,6 @@ from django.views.decorators.http import require_POST
 from account.forms import ProfileEditForm, UserEditForm, UserRegistrationForm
 from account.models import Contact, Profile
 from action.models import Action
-from action.utils import create_action
-
-# // from account.forms import LoginForm
-# // from django.contrib.auth import authenticate, login
-# // from django.http import HttpResponse
-
 
 # Create your views here.
 
@@ -57,9 +51,10 @@ def register(request: HttpRequest) -> HttpResponse:
             new_user.set_password(user_form.cleaned_data["password"])
             new_user.save()
             Profile.objects.create(user=new_user)
-            # create_action(request.user, "Create account")
+            Action.create_action(new_user, "Create account")
             messages.success(request, "Account has been created successfully")
             return render(request, "account/register_done.html", {"new_user": new_user})
+        messages.error(request, "Error while creating your account, please try again")
     else:
         user_form = UserRegistrationForm()
     return render(request, "account/register.html", {"user_form": user_form})
@@ -69,8 +64,23 @@ def register(request: HttpRequest) -> HttpResponse:
 def edit(
     request: HttpRequest,
 ) -> HttpResponse | HttpResponseRedirect | HttpResponsePermanentRedirect:
-    if request.method == "POST" and request.user.profile is not None:  # type: ignore
-        user_form = UserEditForm(instance=request.user, data=request.POST)
+    user_form = UserEditForm(instance=request.user)
+    user = User.objects.get(pk=request.user.pk)
+
+    try:
+        profile_form = ProfileEditForm(instance=user.profile)  # type: ignore
+
+    # ! In case of user without profile
+    except Exception:  # noqa: BLE001
+        user_profile = Profile.objects.create(user=user)
+        profile_form = ProfileEditForm(instance=user_profile)
+        return redirect(
+            "account/edit_new_profile.html",
+            {"profile_form": profile_form},
+        )
+
+    if request.method == "POST" and user.profile is not None:  # type: ignore
+        user_form = UserEditForm(instance=user, data=request.POST)
         profile_form = ProfileEditForm(
             instance=request.user.profile,  # type: ignore
             data=request.POST,
@@ -79,39 +89,10 @@ def edit(
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-
-            # Update user profile data
-            # profile_data = profile_form.cleaned_data
-            # user_profile = Profile.objects.get(user=request.user)
-            # user_profile.photo = profile_data["photo"]
-            # user_profile.date_of_birth = profile_data["birth"]
-            # user_profile.save()
-
-            # create_action(request.user, "Edit profile", profile_form)  # type: ignore
+            Action.create_action(user, "Edit profile", profile_form.instance)
             messages.success(request, "Profile has been updated successfully")
-            return render(request, "account/dashboard.html")
-
-        return messages.error(request, "Error updating your profile")  # type: ignore
-
-    # if request.method == "GET":
-    user_form = UserEditForm(instance=request.user)
-
-    # ! In case of user without profile
-    try:
-        profile_form = ProfileEditForm(instance=request.user.profile)  # type: ignore
-        #     initial={
-        #         "photo": user_profile.photo,
-        #         "birth": user_profile.date_of_birth,
-        #     },
-        # )  # type: ignore
-    except Exception:  # noqa: BLE001
-        user_profile = Profile.objects.create(user=request.user)
-        profile_form = ProfileEditForm(instance=user_profile)  # type: ignore
-        # profile_form = ProfileEditForm(instance=request.user.profile)  # type: ignore
-        return redirect(
-            "account/edit_new_profile.html",
-            {"profile_form": profile_form},
-        )
+            return dashboard(request)
+        messages.error(request, "Error updating your profile")
 
     return render(
         request,
@@ -154,23 +135,30 @@ def user_detail(request: HttpRequest, username: str) -> HttpResponse:
 
 
 @login_required
-@require_POST
+# @require_POST
 def user_follow(request: HttpRequest) -> JsonResponse:
-    user_id = request.POST.get("id")
+    to_user_id = request.POST.get("id")
     action = request.POST.get("action")
-    if user_id and action:
+    if to_user_id and action:
         try:
-            user = User.objects.get(id=user_id)
+            user_from = User.objects.get(pk=request.user.pk)
+            user_to = User.objects.get(pk=to_user_id)
             if action == "follow":
-                Contact.objects.get_or_create(user_from=request.user, user_to=user)
-                create_action(request.user, "Follow", user)  # type: ignore
+                Contact.objects.get_or_create(user_from=user_from, user_to=user_to)
+                Action.create_action(user_from, "Follow", user_to)
             else:
-                Contact.objects.filter(user_from=request.user, user_to=user).delete()
-                create_action(request.user, "Unfollow", user)  # type: ignore
-            return JsonResponse({"status": "ok"})
+                Contact.objects.filter(user_from=user_from, user_to=user_to).delete()
+                Action.create_action(user_from, "Unfollow", user_to)
+            return JsonResponse({
+                "status": "ok",
+                "details": f"Action: {action} to {user_to}",
+            })
         except Contact.DoesNotExist:
-            return JsonResponse({"status": "error"})
-    return JsonResponse({"status": "error"})
+            return JsonResponse({
+                "status": "error",
+                "details": "User not found or doesn't exist",
+            })
+    return JsonResponse({"status": "error", "details": "Invalid request"})
 
 
 # // def user_login(request):

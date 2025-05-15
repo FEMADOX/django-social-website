@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.paginator import EmptyPage, Paginator
 from django.http import (
     HttpRequest,
@@ -13,7 +14,7 @@ from django.http import (
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from action.utils import create_action
+from action.models import Action
 from images.forms import ImageCreateForm
 from images.models import Image
 
@@ -24,6 +25,8 @@ from images.models import Image
 def image_create(
     request: HttpRequest,
 ) -> HttpResponseRedirect | HttpResponsePermanentRedirect | HttpResponse:
+    user = User.objects.get(pk=request.user.pk)
+
     if request.method == "POST":
         form = ImageCreateForm(data=request.POST)
         if form.is_valid():
@@ -31,9 +34,10 @@ def image_create(
             new_image = form.save(commit=False)
             new_image.user = request.user
             new_image.save()
-            # create_action(request.user, "Bookmarked image", new_image)  # type: ignore
+            Action.create_action(user, "Bookmarked image", new_image)
             messages.success(request, "Image added successfully")
             return redirect(new_image.get_absolute_url())
+        messages.error(request, "The formulary wasn't valid, please submit valid data")
     else:
         form = ImageCreateForm(data=request.GET)
 
@@ -73,28 +77,31 @@ def image_detail(request: HttpRequest, img_id: int, slug: str) -> HttpResponse:
 def image_like(request: HttpRequest) -> JsonResponse:
     image_id = request.POST.get("id")
     action = request.POST.get("action")
+    user = User.objects.get(pk=request.user.pk)
+
     if image_id and action:
         try:
             image = Image.objects.get(id=image_id)
             if action == "like":
-                image.users_like.add(request.user)
-                create_action(request.user, "Like", image)  # type: ignore
+                image.users_like.add(user)
+                Action.create_action(user, "Like", image)
             else:
-                image.users_like.remove(request.user)
-                create_action(request.user, "Dislike", image)  # type: ignore
+                image.users_like.remove(user)
+                Action.create_action(user, "Dislike", image)
             users_like = [
                 {
                     "first_name": user.first_name,
                     "profile_photo": (
-                        user.profile.photo.url if user.profile.photo else None
+                        user.profile.photo.url if user.profile.photo else None  # type: ignore
                     ),
                 }
                 for user in image.users_like.all()
+                if isinstance(user, User)
             ]
             return JsonResponse({"status": "ok", "users_like": users_like})
         except Image.DoesNotExist:
-            pass
-    return JsonResponse({"status": "error"})
+            return JsonResponse({"status": "error", "details": "Image doesn'texist"})
+    return JsonResponse({"status": "error", "details": "Invalid request"})
 
 
 @login_required

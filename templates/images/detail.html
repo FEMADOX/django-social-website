@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
-{% comment %} {% load thumbnail %} {% endcomment %}
 
 {% block title %}{{ image.title }}{% endblock title %}
 
 {% block content %}
   <h1>{{image.title}}</h1>
   <a href="{{image.image.url}}">
-    {% comment %} <img src="{% thumbnail image.image 300x0 %}" alt="" class="image-detail"> {% endcomment %}
     <img src="{{ image.image.url }}" alt="" class="image-detail">
   </a>
   {% with total_likes=image.users_like.count users_like=image.users_like.all %}

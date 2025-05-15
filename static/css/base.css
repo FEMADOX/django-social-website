@@ -1,10 +1,63 @@
 @import url(//fonts.googleapis.com/css?family=Muli);
 
-/* html {
-    color-scheme: light dark;
-} */
+:root {
+    --base-color: white;
+    --secondary-color: #12c064;
+    --third-color: #1cdf78;
+    --base-text-color: black;
+    --secondary-text-color: #0e924c;
+    --secondary-text-hover-color: #00a74f;
+    color-scheme: light;
+}
+
+.darkmode {
+    --base-color: #1c1b22;
+    --secondary-color: #12c064;
+    --third-color: #1cdf78;
+    --base-text-color: white;
+    --secondary-text-color: #0e924c;
+    --secondary-text-hover-color: #00a74f;
+    color-scheme: dark;
+}
+
+#theme-switch {
+    height: 2.25rem;
+    width: 2.25rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 4.25px;
+    right: 20px;
+}
+
+#theme-switch svg {
+    fill: var(--base-text-color);
+}
+
+#theme-switch svg:first-child {
+    display: none;
+}
+
+.darkmode #theme-switch {
+    background-color: black;
+}
+
+.darkmode #theme-switch svg:last-child {
+    display: none;
+}
+
+.darkmode #theme-switch svg:first-child {
+    display: block;
+}
 
 body {
+    background-color: var(--base-color);
+    color: var(--base-text-color);
     margin: 0;
     padding: 0;
     font-family: helvetica, sans-serif;
@@ -15,12 +68,12 @@ p {
 }
 
 a {
-    color: #0e924c;
+    color: var(--secondary-text-color);
     text-decoration: none;
 }
 
 a:hover {
-    color: #00a74f;
+    color: var(--secondary-text-hover-color);
 }
 
 h1,
@@ -31,6 +84,7 @@ h5,
 h6 {
     font-family: 'Muli', sans-serif;
     font-weight: normal;
+    color: var(--base-text-color);
 }
 
 h1 {
@@ -50,10 +104,11 @@ ol {
 #header {
     padding: 10px 100px;
     font-size: 14px;
-    background: #12c064;
-    color: #fff;
-    border-bottom: 4px solid #1cdf78;
+    background: var(--secondary-color);
+    color: #f2f8bb;
+    border-bottom: 4px solid var(--third-color);
     overflow: auto;
+    margin-bottom: 15px;
 }
 
 #header .logo {
@@ -65,7 +120,7 @@ ol {
 }
 
 #header .logo:hover {
-    color: #fff;
+    color: var(--base-text-color);
 }
 
 #header ul.menu {
@@ -91,7 +146,7 @@ ol {
 }
 
 #header a:hover {
-    color: #fff;
+    color: var(--base-text-color);
 }
 
 #header .user {
@@ -99,8 +154,16 @@ ol {
     padding-top: 4px;
 }
 
+#header .user form button {
+    background-color: var(--base-color);
+    color: var(--base-text-color);
+    border: 0;
+    border-radius: 5px;
+    padding: 1px 4px 2px;
+}
+
 #content {
-    padding: 30px 100px;
+    padding: 0 100px 30px;
 }
 
 /* forms */
@@ -117,7 +180,7 @@ form p {
 label {
     float: left;
     clear: both;
-    color: #333;
+    color: #575757;
     margin-bottom: 4px;
 }
 
@@ -138,6 +201,7 @@ textarea {
     border: 0;
     padding: 6px 10px;
     font-size: 14px;
+    color: black;
 }
 
 input:hover,
@@ -149,12 +213,13 @@ input:focus {
 input[type=submit],
 a.button {
     font-weight: bold;
-    background: #12c064;
-    color: #ffffff;
+    background: var(--secondary-color);
+    color: white;
     padding: 10px 20px;
     margin: 0 2px;
     font-size: 14px;
     text-transform: uppercase;
+    border-radius: 0.35rem;
 }
 
 .errorlist {
@@ -187,7 +252,8 @@ ul.messages li.info {
     margin: 0;
     padding: 14px 20px;
     list-style: none;
-    color: #fff;
+    color: var(--base-text-color);
+    border-radius: 5px;
 }
 
 ul.messages li.success {
@@ -252,7 +318,7 @@ ul.messages li a.close {
     width: 100%;
     height: 100%;
     display: block;
-    color: #fff;
+    color: var(--base-text-color);
 }
 
 .social li.facebook {
@@ -290,8 +356,9 @@ ul.messages li a.close {
     color: #aaa;
     border: 3px solid #bbb;
     border-radius: 26px;
-    padding: 10px 20px;
-    margin: 20px 10px 0;
+    padding: 7px 20px;
+    margin: -8px 10px;
+    display: inline-block;
 }
 
 a.like,
@@ -309,17 +376,16 @@ a.follow {
     width: 220px;
     height: 300px;
     margin: 0 10px 10px 10px;
-    border-top: 8px solid #12c064;
+    border-top: 8px solid var(--secondary-color);
     background: #eee;
     text-align: center;
-    transition: background 0.3s ease-out, border-top 0.3s ease-out;
+    transition: border-top 0.3s ease-out;
 }
 
 #image-list .image:hover,
 #image-list .image:hover img {
-    background: #cfcfcf;
-    border-top: 15px solid #12c064;
-    transition: background 0.3s ease-in, border-top 0.4s ease-in;
+    border-top: 15px solid var(--secondary-color);
+    transition: border-top 0.4s ease-in;
 }
 
 #image-list img {
@@ -354,12 +420,6 @@ a.follow {
     height: 180px;
     border-radius: 50%;
     margin-bottom: 20px;
-    transition: background-color 0.2s ease-out
-}
-
-#people-list img:hover {
-    background-color: gainsboro;
-    transition: background-color 0.2s ease-in;
 }
 
 #people-list .user {
@@ -367,6 +427,17 @@ a.follow {
     float: left;
     overflow: auto;
     padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s ease-out;
+}
+
+#people-list .user:hover {
+    background-color: var(--secondary-color);
+    transition: 0.3s ease-in;
+}
+
+#people-list .user:hover a {
+    color: white;
 }
 
 #people-list .info {
