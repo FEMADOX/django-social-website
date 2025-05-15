@@ -1,6 +1,6 @@
-import requests
+import cloudinary
+import cloudinary.uploader
 from django import forms
-from django.core.files.base import ContentFile
 from django.utils.text import slugify
 
 from images.models import Image
@@ -24,13 +24,25 @@ class ImageCreateForm(forms.ModelForm):
         return url
 
     def save(self, commit: bool = True) -> Image:
-        image = super().save(commit=False)
+        image: Image = super().save(commit=False)
         image_url = self.cleaned_data["url"]
+        image_title = (
+            self.cleaned_data["title"]
+            if len(self.cleaned_data["title"]) < 50  # noqa: PLR2004
+            else self.cleaned_data["title"][:50] + "..."
+        )
+        image_description = self.cleaned_data["description"]
         name = slugify(image.title)
-        extension = image_url.rsplit(".", 1)[1].lower()
-        image_name = f"{name}.{extension}"
-        response = requests.get(image_url)
-        image.image.save(image_name, ContentFile(response.content), save=False)
+        # extension = image_url.rsplit(".", 1)[1].lower()
+        # image_name = f"{name}.{extension}"
+        upload_result = cloudinary.uploader.upload(
+            image_url,
+            folder="Social_Website/media/images/",
+        )
+        image.title = image_title
+        image.slug = name
+        image.description = image_description
+        image.image = upload_result["secure_url"]
 
         if commit:
             image.save()

@@ -12,7 +12,6 @@ from django.http import (
     JsonResponse,
 )
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.http import require_POST
 
 from action.models import Action
 from images.forms import ImageCreateForm
@@ -30,7 +29,6 @@ def image_create(
     if request.method == "POST":
         form = ImageCreateForm(data=request.POST)
         if form.is_valid():
-            _ = form.cleaned_data
             new_image = form.save(commit=False)
             new_image.user = request.user
             new_image.save()
@@ -73,7 +71,7 @@ def image_detail(request: HttpRequest, img_id: int, slug: str) -> HttpResponse:
 
 
 @login_required
-@require_POST
+# @require_POST
 def image_like(request: HttpRequest) -> JsonResponse:
     image_id = request.POST.get("id")
     action = request.POST.get("action")
