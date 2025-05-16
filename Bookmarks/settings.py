@@ -87,6 +87,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -198,10 +200,13 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", cast=str)
 # -------------------------------------------------------------------------
 
 AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
+    "social_core.backends.open_id.OpenIdAuth",
     "social_core.backends.twitter.TwitterOAuth",
     "social_core.backends.google.GoogleOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
 ]
+
+SOCIAL_AUTH_REQUIRE_POST = True
 
 SOCIAL_AUTH_TWITTER_KEY = config("SOCIAL_AUTH_TWITTER_KEY", cast=str)
 SOCIAL_AUTH_TWITTER_SECRET = config("SOCIAL_AUTH_TWITTER_SECRET", cast=str)

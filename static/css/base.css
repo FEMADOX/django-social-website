@@ -120,7 +120,7 @@ ol {
 }
 
 #header .logo:hover {
-    color: var(--base-text-color);
+    color: white;
 }
 
 #header ul.menu {
@@ -146,7 +146,7 @@ ol {
 }
 
 #header a:hover {
-    color: var(--base-text-color);
+    color: white;
 }
 
 #header .user {
@@ -318,7 +318,7 @@ ul.messages li a.close {
     width: 100%;
     height: 100%;
     display: block;
-    color: var(--base-text-color);
+    color: white;
 }
 
 .social li.facebook {

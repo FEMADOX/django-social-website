@@ -11,7 +11,6 @@ from django.http import (
     JsonResponse,
 )
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.http import require_POST
 
 from account.forms import ProfileEditForm, UserEditForm, UserRegistrationForm
 from account.models import Contact, Profile
