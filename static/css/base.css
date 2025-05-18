@@ -487,5 +487,6 @@ img.user-detail {
 }
 
 .item-img {
-    max-width: 4rem ;
+    max-width: 6rem;
+    max-height: 6rem;
 }
