@@ -1,14 +1,20 @@
+import hashlib
 import logging
 from typing import Any
 
+from allauth.utils import build_absolute_uri
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+from django.http import HttpRequest
 from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
-from account.models import Profile
+from .models import Profile
 
 # Code Down Here
 
@@ -35,13 +41,59 @@ class UserRegistrationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ["username", "first_name", "last_name", "email"]
+        widgets = {
+            "email": forms.EmailInput(attrs={"autocomplete": "email"}),
+        }
 
     def clean_password_2(self) -> str:
-        clean_data = self.cleaned_data
-        if clean_data["password"] != clean_data["password2"]:
+        cleaned_data = self.cleaned_data
+        if cleaned_data["password"] != cleaned_data["password2"]:
             error_message = "Passwords don't match"
             raise forms.ValidationError(error_message)
-        return clean_data["password2"]
+        return cleaned_data["password2"]
+
+    def clean_email(self) -> str:
+        email = self.cleaned_data["email"]
+        if User.objects.filter(email=email).exists():
+            error_message = "Email already exists."
+            raise forms.ValidationError(error_message)
+        return email
+
+    def send_mail(  # noqa: PLR0913, PLR0917
+        self,
+        request: HttpRequest,
+    ) -> None:
+        email = self.cleaned_data["email"]
+        subject = "Account Activation"
+        message = ""
+        activation_link = build_absolute_uri(
+            request,
+            reverse(
+                "account_activation",
+                kwargs={
+                    "uidb64": urlsafe_base64_encode(email.encode()),
+                    "token": hashlib.sha256(email.encode()).hexdigest(),
+                },
+            ),
+        )
+        html_email_template_name = render_to_string(
+            "account/email_validation_confirm.html",
+            {
+                "activation_link": activation_link,
+            },
+        )
+        try:
+            send_mail(
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [email],
+                fail_silently=False,
+                html_message=html_email_template_name,
+            )
+        except Exception as error:
+            logger = logging.getLogger(__name__)
+            logger.exception(f"SMTP error occurred while sending email {error}")  # noqa: G004, TRY401
 
 
 class UserEditForm(forms.ModelForm):

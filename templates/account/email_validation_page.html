@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Validation Page</title>
+  </head>
+
+  <body>
+    {% block content %}
+    <h1>Email Validation Page</h1>
+    <h2>Thank you for registering!</h2>
+    <p>We have sent you an email to validate your email address.</p>
+    <p>
+      Please, check your email inbox and click on the link we sent you to validate your email address.<br>
+      If you did not receive the email, please check your spam folder or <a href="{% url 'login' %}">try again on the
+        login page</a>.<br>
+      If you have any questions, please contact us at <a href="mailto:enmadofenyxz@gmail.com">Proyect Support</a>.<br>
+    </p>
+    {% endblock content %}
+
+  </body>
+
+</html>

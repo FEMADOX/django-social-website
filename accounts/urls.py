@@ -1,8 +1,8 @@
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
 
-from account import views
-from account.forms import CustomPasswordResetForm
+from accounts import views
+from accounts.forms import CustomPasswordResetForm
 
 # // from django.contrib.auth import views as auth_views
 
@@ -18,6 +18,11 @@ urlpatterns = [
         "password-reset/",
         auth_views.PasswordResetView.as_view(form_class=CustomPasswordResetForm),
         name="password_reset",
+    ),
+    path(
+        "activation/<uidb64>/<token>/",
+        views.account_activation,
+        name="account_activation",
     ),
     # // path("login/", views.user_login, name="user_login"),
     # // path("login/", auth_views.LoginView.as_view(), name="login"),

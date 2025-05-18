@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}Log-in{% endblock title %}
-
+{% load socialaccount %}
 {% block content %}
   <h1>Log-in</h1>
   <h2>Please, use the following formulary to log-in:</h2>
@@ -16,8 +16,8 @@
   </div>
   <div class="social">
     <ul>
-      <li class="twitter"><a href="{% url 'social:begin' 'twitter' %}">Sign in with Twitter</a></li>
-      <li class="google"><a href="{% url 'social:begin' 'google-oauth2' %}">Sign in with Google</a></li>
+      <li class="twitter"><a href="{% provider_login_url 'twitter' %}">Sign in with Twitter</a></li>
+      <li class="google"><a href="{% provider_login_url 'google' %}">Sign in with Google</a></li>
     </ul>
   </div>
 {% endblock content %}

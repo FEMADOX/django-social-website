@@ -44,7 +44,7 @@ CSRF_TRUSTED_ORIGINS: str = config("CSRF_TRUSTED_ORIGINS").split(",")  # type: i
 
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
-    "account",
+    "accounts",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -54,8 +54,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "cloudinary_storage",
     "cloudinary",
-    "social_django",
     "django_extensions",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.twitter",
     "images",
     "action",
 ]
@@ -71,6 +75,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "livereload.middleware.LiveReloadScript",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 
@@ -87,8 +92,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "social_django.context_processors.backends",
-                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -180,7 +183,7 @@ cloudinary.config(
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "dashboard"
+LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "login"
 LOGOUT_URL = "logout"
 
@@ -200,13 +203,14 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", cast=str)
 # -------------------------------------------------------------------------
 
 AUTHENTICATION_BACKENDS = [
-    "social_core.backends.open_id.OpenIdAuth",
-    "social_core.backends.twitter.TwitterOAuth",
-    "social_core.backends.google.GoogleOAuth2",
+    # DJANGO
     "django.contrib.auth.backends.ModelBackend",
+    # ALLAUTH
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-SOCIAL_AUTH_REQUIRE_POST = True
+# SOCIAL AUTH
+# -------------------------------------------------------------------------
 
 SOCIAL_AUTH_TWITTER_KEY = config("SOCIAL_AUTH_TWITTER_KEY", cast=str)
 SOCIAL_AUTH_TWITTER_SECRET = config("SOCIAL_AUTH_TWITTER_SECRET", cast=str)
@@ -214,18 +218,53 @@ SOCIAL_AUTH_TWITTER_SECRET = config("SOCIAL_AUTH_TWITTER_SECRET", cast=str)
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", cast=str)
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET", cast=str)
 
-SOCIAL_AUTH_PIPELINE = [
-    "social_core.pipeline.social_auth.social_details",
-    "social_core.pipeline.social_auth.social_uid",
-    "social_core.pipeline.social_auth.auth_allowed",
-    "social_core.pipeline.social_auth.social_user",
-    "social_core.pipeline.user.get_username",
-    "social_core.pipeline.user.create_user",
-    "account.authentication.create_profile",
-    "social_core.pipeline.social_auth.associate_user",
-    "social_core.pipeline.social_auth.load_extra_data",
-    "social_core.pipeline.user.user_details",
-]
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        "APP": {
+            "client_id": config("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", cast=str),
+            "secret": config("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET", cast=str),
+        },
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+            "prompt": "consent",
+        },
+        "OAUTH_PKCE_ENABLED": True,
+        "VERIFIED_EMAIL": True,  # if it's false, it will ask for email verification
+        "EMAIL_AUTHENTICATION": True,
+    },
+    "twitter": {
+        "APP": {
+            "client_id": config("SOCIAL_AUTH_TWITTER_KEY", cast=str),
+            "secret": config("SOCIAL_AUTH_TWITTER_SECRET", cast=str),
+        },
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+            "prompt": "consent",
+        },
+        "OAUTH_PKCE_ENABLED": True,
+        "VERIFIED_EMAIL": True,  # if it's false, it will ask for email verification
+        "EMAIL_AUTHENTICATION": True,
+    },
+}
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_AUTO_SIGNUP = True
+ACCOUNT_UNIQUE_EMAIL = True
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 
 # LOGGING = {
 #     "version": 1,

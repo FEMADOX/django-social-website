@@ -1,7 +1,6 @@
 import datetime
-from typing import Any
 
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import AbstractBaseUser, AbstractUser, User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -43,7 +42,7 @@ class Action(models.Model):
 
     @staticmethod
     def create_action(
-        user: User | AbstractUser,
+        user: User | AbstractUser | AbstractBaseUser,
         verb: str,
         target: models.Model | None = None,  # noqa: ANN401
     ) -> bool:
@@ -55,7 +54,7 @@ class Action(models.Model):
             created__gte=last_minute,
         )
         # Don't save admins users actions
-        if user.is_staff or user.is_superuser:
+        if user.is_staff or user.is_superuser:  # type: ignore
             return False
         if target:
             target_ct = ContentType.objects.get_for_model(target)

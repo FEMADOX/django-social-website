@@ -252,7 +252,7 @@ ul.messages li.info {
     margin: 0;
     padding: 14px 20px;
     list-style: none;
-    color: var(--base-text-color);
+    color: white;
     border-radius: 5px;
 }
 
