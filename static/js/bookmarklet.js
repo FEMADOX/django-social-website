@@ -1,4 +1,6 @@
-const siteUrl = '//127.0.0.1:8000/';
+var domain = window.location.host;
+
+const siteUrl = '//' + domain + '/';
 const styleUrl = siteUrl + 'static/css/bookmarklet.css';
 const minWidth = 250;
 const minHeight = 250;

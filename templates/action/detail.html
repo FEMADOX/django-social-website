@@ -2,12 +2,14 @@
   <div class="action">
     <div class="images">
       {% if profile.photo %}
-        <a href="{{ user.get_absolute_url }}"><img src="{{ im.url }}" alt="{{ user.get_full_name }}" class="item-img" /></a>
+        <a href="{{ user.get_absolute_url }}"><img src="{{ profile.photo.url }}" alt="{{ user.get_full_name }}" class="item-img" /></a>
       {% endif %}
       {% if action.target %}
         {% with target=action.target %}
           {% if target.image %}
-            <a href="{{ target.get_absolute_url }}"><img src="{{ im.url }}" alt="" class="item-img" /></a>
+            <a href="{{ target.get_absolute_url }}"><img src="{{ target.image.url }}" alt="" class="item-img" /></a>
+          {% elif target.profile %}
+            <a href="{{ target.get_absolute_url }}"><img src="{{ target.profile.photo.url }}" alt="" class="item-img" /></a>
           {% endif %}
         {% endwith %}
       {% endif %}
@@ -16,11 +18,15 @@
       <p>
         <span class="date">{{ action.created|timesince }} ago</span>
         <br />
-        <a href="{{ user.get_absolute_url }}">{{ user.first_name }}</a>
+        <a href="{{ user.get_absolute_url }}">{{ user.first_name|title }}</a>
         {{ action.verb }}
         {% if action.target %}
           {% with target=action.target %}
-            <a href="{{ target.get_absolute_url }}">{{ target }}</a>
+            {% if target.first_name %}
+              <a href="{{ target.get_absolute_url }}">{{ target.first_name|title }}</a>
+            {% else %}
+              <a href="{{ target.get_absolute_url }}">{{ target }}</a>
+            {% endif %}
           {% endwith %}
         {% endif %}
       </p>

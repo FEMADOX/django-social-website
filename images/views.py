@@ -71,7 +71,6 @@ def image_detail(request: HttpRequest, img_id: int, slug: str) -> HttpResponse:
 
 
 @login_required
-# @require_POST
 def image_like(request: HttpRequest) -> JsonResponse:
     image_id = request.POST.get("id")
     action = request.POST.get("action")
@@ -92,6 +91,7 @@ def image_like(request: HttpRequest) -> JsonResponse:
                     "profile_photo": (
                         user.profile.photo.url if user.profile.photo else None  # type: ignore
                     ),
+                    "profile_url": user.get_absolute_url(),  # type: ignore
                 }
                 for user in image.users_like.all()
                 if isinstance(user, User)

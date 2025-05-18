@@ -8,11 +8,11 @@
   <h1>Dashboard</h1>
   {% with total_images_created=request.user.images_created.count %}
     <h2 class="welcom_subtitle">Welcome to your Dashboard</h2>
-    You have bookmarked {{ total_images_created }} image{{ total_images_created|pluralize }}.</p>
+    <p>You have bookmarked {{ total_images_created }} image{{ total_images_created|pluralize }}.</p>
   {% endwith %}
   <p>
     Drag the following button to your bookmarks toolbar to bookmark images from other websites ->
-    <a href="javascript:{% include 'bookmarklet_launcher.js' %}" class="button">Bookmark it</a>
+    <a href="javascript:{% include 'bookmarklet_launcher.js' %}" class="bookmarklet button">Bookmark it</a>
   </p>
   <p>
     You can:

@@ -7,11 +7,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.8" />
     <title>{% block title %}{% endblock title %}</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-    <script type="text/javascript" src="/static/js/darkmode.js" defer></script>
-    <script type="text/javascript" src="/static/js/user_follow.js" defer></script>
-    <script type="text/javascript" src="/static/js/close_button.js" defer></script>
+    <script type="text/javascript" src="{% static 'js/darkmode.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'js/user_follow.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'js/close_button.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'js/image_like.js' %}" defer></script>
   </head>
 
   <body class="darkmode">
@@ -51,13 +53,6 @@
     {% endif %}
     <div id="content">{% block content %}{% endblock content %}</div>
     <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
-    <!-- <script>
-      const csrftoken = Cookies.get("csrftoken");
-      document.addEventListener("DOMContentLoaded", (event) => {
-        {% block domready %}{% endblock domready %}
-      });
-    </script> -->
-    <!-- {% block extra_scripts %}{% endblock extra_scripts %} -->
   </body>
 
 </html>

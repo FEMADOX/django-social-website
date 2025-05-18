@@ -1,3 +1,5 @@
+const csrftoken = Cookies.get("csrftoken");
+
 // Obtaining the darkmode status
 var darkmode = localStorage.getItem("darkmode")
 // Obtaining the theme switch button

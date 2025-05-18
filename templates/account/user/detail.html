@@ -15,7 +15,6 @@
   {% with total_followers=user.followers.count %}
     <span class="count"><span class="total">{{ total_followers }} follower{{ total_followers|pluralize }}</span></span>
     {% if request.user == user %}
-      <p>Already Followed User</p> 
     {% else %}
       <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
         {% if request.user not in user.followers.all %}
@@ -25,8 +24,9 @@
         {% endif %}
       </a>
     {% endif %}
+    <h2>Images uploaded by {{ user.first_name }}</h2>
     <div id="image-list" class="image-container">
-      {% include 'images//list_images.html' with images=user.images_created.all %}
+      {% include 'images/list_images.html' with images=user.images_created.all %}
     </div>
   {% endwith %}
 {% endblock %}
