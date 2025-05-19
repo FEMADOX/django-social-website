@@ -1,4 +1,4 @@
-var develop = false;
+var develop = true;
 var domain = develop ? '127.0.0.1:8000' : 'django-social-website.up.railway.app';
 
 (function () {
