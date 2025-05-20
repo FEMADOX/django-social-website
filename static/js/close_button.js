@@ -1,4 +1,3 @@
-// Obtaining the darkmode status
 const closeButtons = document.getElementsByClassName("close")
 
 // Close message by clicking the "x" button
