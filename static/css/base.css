@@ -341,6 +341,7 @@ ul.messages li a.close {
 .image-preview,
 .image-detail {
     max-width: 300px;
+    max-height: 300px;
     float: left;
     margin: 0 20px 20px 0;
 }
@@ -398,8 +399,8 @@ a.follow {
 }
 
 #image-list img {
-    width: 220px;
-    height: 220px;
+    max-width: 220px;
+    max-height: 220px;
 }
 
 #image-list .info {
