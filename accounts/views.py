@@ -104,9 +104,10 @@ def account_activation(
         email=pending_registration.get("email"),
         first_name=pending_registration.get("first_name"),
         last_name=pending_registration.get("last_name"),
-        password=pending_registration.get("password"),
         is_active=True,
     )
+    user.set_password(pending_registration.get("password"))
+    user.save()
     Profile.objects.create(user=user)
     Action.create_action(user, "Create account")
     login(request, user, settings.AUTHENTICATION_BACKENDS[0])

@@ -1,5 +1,5 @@
 var develop = false;
-var domain = develop ? '127.0.0.1:8000' : 'django-social-website.up.railway.app';
+var domain = develop ? '127.0.0.1:8000' : 'django-social-website-hade.onrender.com';
 
 (function () {
     if (!window.bookmarklet) {

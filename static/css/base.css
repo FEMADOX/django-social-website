@@ -61,7 +61,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: helvetica, sans-serif;
-    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    transition: color 0.2s ease-in-out,
+        background-color 0.2s ease-in-out;
 }
 
 p {
@@ -350,9 +351,9 @@ ul.messages li a.close {
 }
 
 p.image-detail {
-  display: flex;
-  float: none;
-  padding-left: 10px;
+    display: flex;
+    float: none;
+    padding-left: 10px;
 }
 
 .image-info div {
