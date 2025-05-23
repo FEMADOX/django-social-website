@@ -1,7 +1,9 @@
 {% if images %}
   {% for image in images %}
     <div class="image">
-      <a href="{{ image.get_absolute_url }}"><a href="{{ image.get_absolute_url }}"><img src="{{ image.image.url }}" alt="" /></a></a>
+      <a href="{{ image.get_absolute_url }}">
+        <a class="image-detail-photo" href="{{ image.get_absolute_url }}"><img src="{{ image.image.url }}" alt="" /></a>
+      </a>
       <div class="info">
         <a href="{{ image.get_absolute_url }}" class="title">{{ image.title }}</a>
       </div>

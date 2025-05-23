@@ -387,15 +387,15 @@ a.follow {
     height: 300px;
     margin: 0 10px 10px 10px;
     border-top: 8px solid var(--secondary-color);
-    background: #eee;
+    background: white;
     text-align: center;
     transition: border-top 0.3s ease-out;
+    border-radius: 0 0 10px 10px;
 }
 
-#image-list .image:hover,
-#image-list .image:hover img {
-    border-top: 15px solid var(--secondary-color);
-    transition: border-top 0.4s ease-in;
+#image-list .image:hover {
+    border-top: 20px solid var(--secondary-color);
+    transition: border-top 0.4s ease-out;
 }
 
 #image-list img {
@@ -405,10 +405,18 @@ a.follow {
 
 #image-list .info {
     padding: 10px;
+    background-color: #eee;
+    border-radius: 0 0 10px 10px;
 }
 
 #image-list .info a {
     color: #333;
+}
+
+.image-detail-photo {
+    display: flex;
+    justify-content: center;
+    padding: 5px 0;
 }
 
 .image-likes div {
