@@ -337,6 +337,12 @@ ul.messages li a.close {
     background: #de1710;
 }
 
+.social li.facebook,
+.social li.google,
+.social li.twitter {
+    border-radius: 4px;
+    text-align: center;
+}
 
 /* images */
 
