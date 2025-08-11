@@ -49,7 +49,7 @@ A full-featured social media platform built with Django that allows users to boo
 ### Core Dependencies
 
 ```toml
-django==5.1.2
+django>=5.1.2
 django-allauth[socialaccount]>=65.8.0
 cloudinary>=1.44.0
 django-cloudinary-storage>=0.3.0
