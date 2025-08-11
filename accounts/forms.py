@@ -62,7 +62,7 @@ class UserRegistrationForm(forms.ModelForm):
         self,
         request: HttpRequest,
     ) -> None:
-        email = self.cleaned_data["email"]
+        email = request.session["pending_registration"]["email"]
         subject = "Account Activation"
         message = ""
         activation_link = build_absolute_uri(

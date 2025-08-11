@@ -13,7 +13,8 @@
 .darkmode {
     --base-color: #1c1b22;
     --secondary-color: #12c064;
-    --third-color: #1cdf78;
+    /* --third-color: #1cdf78; */
+    --third-color: #11954f;
     --base-text-color: white;
     --secondary-text-color: #0e924c;
     --secondary-text-hover-color: #00a74f;
@@ -204,6 +205,7 @@ textarea {
     padding: 6px 10px;
     font-size: 14px;
     color: black;
+    border-radius: 4px;
 }
 
 input:hover,
@@ -391,6 +393,9 @@ a.follow {
     text-align: center;
     transition: border-top 0.3s ease-out;
     border-radius: 0 0 10px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 #image-list .image:hover {
@@ -416,7 +421,6 @@ a.follow {
 .image-detail-photo {
     display: flex;
     justify-content: center;
-    padding: 5px 0;
 }
 
 .image-likes div {
@@ -500,4 +504,17 @@ img.user-detail {
 .item-img {
     max-width: 6rem;
     max-height: 6rem;
+}
+
+.email-validation {
+    text-align: center;
+}
+
+*:disabled {
+    cursor: not-allowed;
+}
+
+form.email-validation {
+    display: flex;
+    justify-content: center;
 }

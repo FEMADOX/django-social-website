@@ -60,10 +60,13 @@ def register(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         user_form = UserRegistrationForm(request.POST, request.FILES)
         if user_form.is_valid():
-            request.session["pending_registration"] = user_form.cleaned_data
+            request.session["pending_registration"] = {}
+            request.session["pending_registration"]["email"] = user_form.cleaned_data[
+                "email"
+            ]
             user_form.send_mail(request)
             messages.success(request, "We have sent an email to your address")
-            return redirect("login")
+            return redirect("email_validation")
         messages.error(
             request,
             "Error while creating your account, please check your credencials",
@@ -128,9 +131,13 @@ def edit(
     # ! In case of user without profile
     except Exception:  # noqa: BLE001
         user_profile = Profile.objects.create(user=user)
-        profile_form = ProfileEditForm(instance=user_profile)
+        profile_form = (
+            ProfileEditForm(instance=user_profile)
+            if user_profile
+            else ProfileEditForm()
+        )
 
-    if request.method == "POST" and user.profile is not None:  # type: ignore
+    if request.method == "POST" and user.profile is not None and user:  # type: ignore
         user_form = UserEditForm(instance=user, data=request.POST)
         profile_form = ProfileEditForm(
             instance=request.user.profile,  # type: ignore
@@ -211,96 +218,29 @@ def user_follow(request: HttpRequest) -> JsonResponse:
     return JsonResponse({"status": "error", "details": "Invalid request"})
 
 
-# def email_validation(
-#     strategy: HttpRequest,
-#     code,  # noqa: ANN001
-#     partial_token: str,
-# ) -> None:
-#     url = (
-#         strategy.build_absolute_uri(
-#             # reverse("social:complete", args=(backend.name,)),
-#             reverse("email_validation_done", args=(backend.name,)),
-#         )
-#         + "?verification_code="
-#         + code.code
-#         + "&partial_token="
-#         + partial_token
-#     )
-#     send_validation_email(url, code.email)
-
-
-# def email_sent(request: HttpRequest) -> HttpResponse:
-#     messages.success(
-#         request,
-#         "We have sent an email to your address, please check it out.",
-#     )
-#     return render(request, "account/email_validation_page.html")
-# return url
-
-# try:
-#     uid = force_str(urlsafe_base64_decode(uidb64))
-#     print("UID:", uid)
-#     user = User.objects.get(pk=uid)
-#     print("USER:", user)
-# except (TypeError, ValueError, OverflowError, User.DoesNotExist, ValidationError):
-#     user = None
-
-# if user and default_token_generator.check_token(user, token):
-#     print("TOKEN VALIDATED")
-#     print("USER:", user)
-#     user.is_active = True
-#     user.save()
-#     print("LOGIN")
-#     login(request, user)
-#     print("REDIRECTED")
-#     return redirect("dashboard")
-# print("TOKEN INVALID, REDIRECTED TO EMAIL VALIDATION PAGE")
-# return render(request, "account/email_validation.html")
-
-
-# def email_validation_done(
-#     request: HttpRequest,
-#     uidb64: str,
-#     token: str,
-# ) -> HttpResponseRedirect | HttpResponse:
-#     # print(request.session.get("email_validation_address"))
-#     User = get_user_model()  # noqa: N806
-#     try:
-#         uid = force_str(urlsafe_base64_decode(uidb64.encode()))
-#         user = User.objects.get(pk=uid)
-#     except (TypeError, ValueError, OverflowError, User.DoesNotExist, ValidationError):
-#         user = None
-
-#     if user and default_token_generator.check_token(user, token):
-#         user.is_active = True
-#         user.save()
-#         user_profile = Profile.objects.create(user=user)
-#         profile_form = ProfileEditForm(instance=user_profile)
-#         profile_form.save()
-#         login(request, user)
-#         return redirect("dashboard")
-#     return render(request, "account/login.html")
-
-
-# // def user_login(request):
-
-# //     if request.method == "POST":
-# //         form = LoginForm(request.POST)
-# //         if form.is_valid():
-# //             cd = form.cleaned_data
-# //             user = authenticate(
-# //                 request,
-# //                 username=cd["username"],
-# //                 password=cd["password"],
-# //             )
-# //             if user is not None:
-# //                 if user.is_active:
-# //                     login(request, user)
-# //                     return HttpResponse("Authenticated succesfully")
-# //                 else:
-# //                     return HttpResponse("Disabled Account")
-# //             else:
-# //                 return HttpResponse("Invalid Login")
-# //     else:
-# //         form = LoginForm()
-# //     return render(request, "account/login.html", {"form": form})
+def email_validation(
+    request: HttpRequest,
+) -> HttpResponse:
+    """
+    This view is used to inform the user that an email has been sent
+    to their address for account activation.
+    It is displayed after the user tries to register, between the
+    registration and email confirmation steps.
+    Waiting until User confirm the email and user can request to send
+    the email again if they didn't receive it.
+    """
+    if request.method == "POST":
+        user_form = UserRegistrationForm(request.POST, request.FILES)
+        if not request.session.get("pending_registration"):
+            messages.error(
+                request,
+                "Error while sending the email, please try again later",
+            )
+            return redirect("register")
+        user_form.send_mail(request)
+        messages.success(
+            request,
+            "We have re-sent an email to your address",
+        )
+        return redirect("email_validation")
+    return render(request, "account/email_validation.html")

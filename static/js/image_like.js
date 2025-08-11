@@ -1,4 +1,4 @@
-function imageLike() {
+const imageLike = () => {
 
     var options = {
         method: "POST",
@@ -72,7 +72,6 @@ function imageLike() {
 
                                 var a = document.createElement("a");
                                 a.href = user.profile_url;
-                                console.log(user)
                                 a.appendChild(img)
                                 a.appendChild(p)
 
