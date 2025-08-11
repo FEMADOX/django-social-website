@@ -1,5 +1,22 @@
 let counter = 60
 const resendButton = document.getElementById('resend-button')
+const form = resendButton.closest('form')
+let isSubmitting = false
+
+form.onsubmit = (event) => {
+  if (counter > 0) {
+    event.preventDefault()
+    return false
+  }
+
+  if (!isSubmitting) {
+    isSubmitting = true
+    resendButton.value = 'Submitting...'
+    resendButton.disabled = true
+    return true
+  }
+}
+
 resendButton.value = `Resend Email in (${counter})s`
 resendButton.disabled = counter > 0
 

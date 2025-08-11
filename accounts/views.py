@@ -60,10 +60,7 @@ def register(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         user_form = UserRegistrationForm(request.POST, request.FILES)
         if user_form.is_valid():
-            request.session["pending_registration"] = {}
-            request.session["pending_registration"]["email"] = user_form.cleaned_data[
-                "email"
-            ]
+            request.session["pending_registration"] = user_form.cleaned_data
             user_form.send_mail(request)
             messages.success(request, "We have sent an email to your address")
             return redirect("email_validation")

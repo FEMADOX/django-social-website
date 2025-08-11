@@ -224,6 +224,7 @@ a.button {
     font-size: 14px;
     text-transform: uppercase;
     border-radius: 0.35rem;
+    cursor: pointer;
 }
 
 .errorlist {
@@ -527,4 +528,5 @@ form.email-validation {
 
 form.email-validation input[type="submit"]:disabled {
     background-color: gray;
+    cursor: not-allowed;
 }
