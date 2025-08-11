@@ -15,6 +15,6 @@
   <p class="email-validation">If you did not receive the email</p>
   <form class="email-validation" action="{% url 'email_validation' %}" method="post">
     {% csrf_token %}
-    <button id="resend-button" type="submit">Resend Email</button>
+    <input id="resend-button" type="submit" value="Resend Email">
   </form>
 {% endblock %}

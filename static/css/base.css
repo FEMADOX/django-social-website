@@ -518,3 +518,7 @@ form.email-validation {
     display: flex;
     justify-content: center;
 }
+
+form.email-validation input[type="submit"]:disabled {
+    background-color: gray;
+}

@@ -1,12 +1,14 @@
 let counter = 60
 const resendButton = document.getElementById('resend-button')
+resendButton.value = `Resend Email in (${counter})s`
+resendButton.disabled = counter > 0
 
 const timer = setInterval(() => {
   counter--
-  resendButton.innerText = `Resend Email in (${counter})s`
+  resendButton.value = `Resend Email in (${counter})s`
   resendButton.disabled = counter > 0
   if (counter <= 0) {
-    resendButton.innerText = 'Resend Email'
+    resendButton.value = 'Resend Email'
     clearInterval(timer)
   }
 }, 1000)
