@@ -54,7 +54,7 @@ class Action(models.Model):
             created__gte=last_minute,
         )
         # Don't save admins users actions
-        if user.is_staff or user.is_superuser:  # type: ignore
+        if user.is_staff or user.is_superuser:
             return False
         if target:
             target_ct = ContentType.objects.get_for_model(target)
