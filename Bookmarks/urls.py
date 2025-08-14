@@ -12,7 +12,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     re_path(
         r".*\.js\.map$",
-        lambda: HttpResponse(status=204),
+        lambda request: HttpResponse(status=204),  # noqa: ARG005
     ),  # Disable sourcemaps
 ]
 
