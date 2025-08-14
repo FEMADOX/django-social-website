@@ -85,10 +85,10 @@ def image_like(request: HttpRequest) -> JsonResponse:
     try:
         image = Image.objects.get(id=image_id)
         if action == "like":
-            image.users_like.add(user)
+            image.users_like.add(user)  # type: ignore
             Action.create_action(user, "Like", image)
         else:
-            image.users_like.remove(user)
+            image.users_like.remove(user)  # type: ignore
             Action.create_action(user, "Dislike", image)
         users_like = [
             {
@@ -98,7 +98,7 @@ def image_like(request: HttpRequest) -> JsonResponse:
                 ),
                 "profile_url": user.get_absolute_url(),  # type: ignore
             }
-            for user in image.users_like.select_related("profile").all()
+            for user in image.users_like.select_related("profile").all()  # type: ignore
         ]
         return JsonResponse({"status": "ok", "users_like": users_like})
     except Image.DoesNotExist:
