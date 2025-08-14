@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
   {{ image.title }}
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript" src="{% static 'js/image_like.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -29,7 +34,9 @@
           {% if user.profile.photo %}
             <a href="{{ user.get_absolute_url }}"><img src="{{ user.profile.photo.url }}" alt="" /></a>
           {% endif %}
-          <p><a href="{{ user.get_absolute_url }}">{{ user.first_name }}</a></p>
+          <p>
+            <a href="{{ user.get_absolute_url }}">{{ user.first_name }}</a>
+          </p>
         </div>
       {% empty %}
         <div>

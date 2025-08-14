@@ -1,91 +1,90 @@
-function imageLike() {
+const imageLike = () => {
 
-    var options = {
+    let options = {
         method: "POST",
         headers: { "X-CSRFToken": csrftoken },
         mode: "same-origin",
-    };
+    }
 
     document.addEventListener("click", function (event) {
         if (event.target.matches("a.like")) {
-            event.preventDefault();
+            event.preventDefault()
 
-            const url = event.target.href;
-            var likeButton = event.target;
+            const url = event.target.href
+            let likeButton = event.target
 
             //* Create form data to send in the request
-            var formData = new FormData();
-            formData.append("id", likeButton.dataset.id);
-            formData.append("action", likeButton.dataset.action);
-            options["body"] = formData;
+            let formData = new FormData()
+            formData.append("id", likeButton.dataset.id)
+            formData.append("action", likeButton.dataset.action)
+            options["body"] = formData
 
             //* Send the fetch request
             fetch(url, options)
                 .then(response => response.json())
                 .then(data => {
                     if (data["status"] === "ok") {
-                        var previousAction = likeButton.dataset.action;
+                        let previousAction = likeButton.dataset.action
 
                         //* Toggle button text and data-action 
-                        var action = previousAction === "like" ? "dislike" : "like";
-                        likeButton.dataset.action = action;
-                        likeButton.innerHTML = action;
+                        let action = previousAction === "like" ? "dislike" : "like"
+                        likeButton.dataset.action = action
+                        likeButton.innerHTML = action
 
                         //* Update like count 
-                        var likeCount = document.querySelector("span.count .total");
-                        var totalLikes = parseInt(likeCount.innerHTML);
-                        var likeWord = "like";
-                        totalLikes = previousAction === "like" ? totalLikes + 1 : totalLikes - 1;
-                        likeWord = totalLikes !== 1 ? "likes" : "like";
-                        likeCount.innerHTML = `${totalLikes} ${likeWord}`;
+                        let likeCount = document.querySelector("span.count .total")
+                        let totalLikes = parseInt(likeCount.innerHTML)
+                        let likeWord = "like"
+                        totalLikes = previousAction === "like" ? totalLikes + 1 : totalLikes - 1
+                        likeWord = totalLikes !== 1 ? "likes" : "like"
+                        likeCount.innerHTML = `${totalLikes} ${likeWord}`
 
                         //* Update users like information 
-                        var usersLike = document.getElementById("image-likes");
-                        usersLike.innerHTML = ""; // Clear exising content
+                        let usersLike = document.getElementById("image-likes")
+                        usersLike.innerHTML = "" // Clear exising content
 
-                        var pUsersLike = document.createElement("p");
-                        pUsersLike.textContent = "Users Like:";
-                        pUsersLike.classList.add("image-detail");
-                        usersLike.appendChild(pUsersLike);
+                        let pUsersLike = document.createElement("p")
+                        pUsersLike.textContent = "Users Like:"
+                        pUsersLike.classList.add("image-detail")
+                        usersLike.appendChild(pUsersLike)
 
                         if (totalLikes === 0) {
-                            var txtDiv = document.createElement("div");
-                            var txtNoLikesYet = document.createElement("p");
-                            txtNoLikesYet.textContent = "Nobody likes this image yet";
-                            txtDiv.appendChild(txtNoLikesYet);
-                            usersLike.appendChild(txtDiv);
+                            let txtDiv = document.createElement("div")
+                            let txtNoLikesYet = document.createElement("p")
+                            txtNoLikesYet.textContent = "Nobody likes this image yet"
+                            txtDiv.appendChild(txtNoLikesYet)
+                            usersLike.appendChild(txtDiv)
                         } else {
                             data["users_like"].forEach(user => {
-                                var userDiv = document.createElement("div");
-                                userDiv.classList.add("image-likes");
+                                let userDiv = document.createElement("div")
+                                userDiv.classList.add("image-likes")
+                                let img = document.createElement("img")
 
                                 if (user.profile_photo) {
-                                    var img = document.createElement("img");
-                                    img.src = user.profile_photo;
-                                    userDiv.appendChild(img);
+                                    img.src = user.profile_photo
+                                    userDiv.appendChild(img)
                                 }
 
-                                var p = document.createElement("p");
-                                p.textContent = user.first_name;
-                                userDiv.appendChild(p);
-                                usersLike.appendChild(userDiv);
+                                let p = document.createElement("p")
+                                p.textContent = user.first_name
+                                userDiv.appendChild(p)
+                                usersLike.appendChild(userDiv)
 
-                                var a = document.createElement("a");
-                                a.href = user.profile_url;
-                                console.log(user)
+                                let a = document.createElement("a")
+                                a.href = user.profile_url
                                 a.appendChild(img)
                                 a.appendChild(p)
 
-                                userDiv.appendChild(a);
-                                usersLike.appendChild(userDiv);
-                            });
+                                userDiv.appendChild(a)
+                                usersLike.appendChild(userDiv)
+                            })
                         };
                     };
                 })
                 .catch(error => {
-                    console.error("Error:", error);
-                });
+                    console.error("Error:", error)
+                })
         };
-    });
+    })
 }
-imageLike();
+imageLike()

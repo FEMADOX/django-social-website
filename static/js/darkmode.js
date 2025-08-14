@@ -1,7 +1,5 @@
-const csrftoken = Cookies.get("csrftoken");
-
 // Obtaining the darkmode status
-var darkmode = localStorage.getItem("darkmode")
+let darkmode = localStorage.getItem("darkmode")
 // Obtaining the theme switch button
 const themeSwitch = document.getElementById("theme-switch")
 
@@ -25,9 +23,9 @@ if (darkmode === "active") {
 } else {
     // If there is no preference stored, use the system's configuration
     if (window.matchMedia && window.matchMedia("(color-scheme: dark)").matches) {
-        enableDarkmode();
+        enableDarkmode()
     } else {
-        disableDarkmode();
+        disableDarkmode()
     }
 }
 

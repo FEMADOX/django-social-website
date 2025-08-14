@@ -76,30 +76,33 @@ def image_like(request: HttpRequest) -> JsonResponse:
     action = request.POST.get("action")
     user = User.objects.get(pk=request.user.pk)
 
-    if image_id and action:
-        try:
-            image = Image.objects.get(id=image_id)
-            if action == "like":
-                image.users_like.add(user)
-                Action.create_action(user, "Like", image)
-            else:
-                image.users_like.remove(user)
-                Action.create_action(user, "Dislike", image)
-            users_like = [
-                {
-                    "first_name": user.first_name,
-                    "profile_photo": (
-                        user.profile.photo.url if user.profile.photo else None  # type: ignore
-                    ),
-                    "profile_url": user.get_absolute_url(),  # type: ignore
-                }
-                for user in image.users_like.all()
-                if isinstance(user, User)
-            ]
-            return JsonResponse({"status": "ok", "users_like": users_like})
-        except Image.DoesNotExist:
-            return JsonResponse({"status": "error", "details": "Image doesn'texist"})
-    return JsonResponse({"status": "error", "details": "Invalid request"})
+    if not image_id or not action:
+        return JsonResponse({
+            "status": "error",
+            "details": "Image ID and Action required",
+        })
+
+    try:
+        image = Image.objects.get(id=image_id)
+        if action == "like":
+            image.users_like.add(user)  # type: ignore
+            Action.create_action(user, "Like", image)
+        else:
+            image.users_like.remove(user)  # type: ignore
+            Action.create_action(user, "Dislike", image)
+        users_like = [
+            {
+                "first_name": user.first_name,
+                "profile_photo": (
+                    user.profile.photo.url if user.profile.photo else None  # type: ignore
+                ),
+                "profile_url": user.get_absolute_url(),  # type: ignore
+            }
+            for user in image.users_like.select_related("profile").all()  # type: ignore
+        ]
+        return JsonResponse({"status": "ok", "users_like": users_like})
+    except Image.DoesNotExist:
+        return JsonResponse({"status": "error", "details": "Image doesn't exist"})
 
 
 @login_required

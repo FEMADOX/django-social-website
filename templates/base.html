@@ -10,10 +10,14 @@
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    <script>
+      const csrftoken = Cookies.get("csrftoken")
+    </script>
+    {% block scripts %}
+    {% endblock scripts %}
     <script type="text/javascript" src="{% static 'js/darkmode.js' %}" defer></script>
-    <script type="text/javascript" src="{% static 'js/user_follow.js' %}" defer></script>
     <script type="text/javascript" src="{% static 'js/close_button.js' %}" defer></script>
-    <script type="text/javascript" src="{% static 'js/image_like.js' %}" defer></script>
   </head>
 
   <body class="darkmode">
@@ -52,7 +56,6 @@
       </ul>
     {% endif %}
     <div id="content">{% block content %}{% endblock content %}</div>
-    <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
   </body>
 
 </html>

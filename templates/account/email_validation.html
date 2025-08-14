@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Email Validation
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript" src="{% static 'js/email_validation.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+  <h1 class="email-validation">Email Validation</h1>
+  <p class="email-validation">Please check your email for the activation link.</p>
+  <p class="email-validation">If you did not receive the email</p>
+  <form class="email-validation" action="{% url 'email_validation' %}" method="post">
+    {% csrf_token %}
+    <input id="resend-button" type="submit" value="Resend Email">
+  </form>
+{% endblock %}
