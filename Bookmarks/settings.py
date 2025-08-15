@@ -34,10 +34,10 @@ SECRET_KEY = config("SECRET_KEY", cast=str)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS: str = config("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS").split(",")
 
-CORS_ORIGIN_WHITELIST: str = config("CORS_ORIGIN_WHITELIST").split(",")
-CSRF_TRUSTED_ORIGINS: str = config("CSRF_TRUSTED_ORIGINS").split(",")
+CORS_ORIGIN_WHITELIST = config("CORS_ORIGIN_WHITELIST").split(",")
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS").split(",")
 
 
 # Application definition

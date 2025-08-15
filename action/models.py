@@ -1,6 +1,6 @@
 import datetime
 
-from django.contrib.auth.models import AbstractBaseUser, AbstractUser, User
+from django.contrib.auth.models import AbstractUser, User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -42,9 +42,9 @@ class Action(models.Model):
 
     @staticmethod
     def create_action(
-        user: User | AbstractUser | AbstractBaseUser,
+        user: User | AbstractUser,
         verb: str,
-        target: models.Model | None = None,  # noqa: ANN401
+        target: models.Model | None = None,
     ) -> bool:
         now = timezone.now()
         last_minute = now - datetime.timedelta(seconds=60)
