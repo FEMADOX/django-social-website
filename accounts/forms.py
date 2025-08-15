@@ -58,7 +58,7 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError(error_message)
         return email
 
-    def send_mail(  # noqa: PLR0913, PLR0917
+    def send_mail(
         self,
         request: HttpRequest,
     ) -> None:
@@ -90,9 +90,9 @@ class UserRegistrationForm(forms.ModelForm):
                 fail_silently=False,
                 html_message=html_email_template_name,
             )
-        except Exception as error:
+        except Exception:
             logger = logging.getLogger(__name__)
-            logger.exception(f"SMTP error occurred while sending email {error}")  # noqa: G004, TRY401
+            logger.exception("SMTP error occurred while sending email")
 
 
 class UserEditForm(forms.ModelForm):
@@ -150,4 +150,5 @@ class CustomPasswordResetForm(PasswordResetForm):
             )
         except Exception as error:
             logger = logging.getLogger(__name__)
-            logger.exception(f"SMTP error occurred while sending email {error}")  # noqa: G004, TRY401
+            msg = f"SMTP error occurred while sending email {error}"
+            logger.exception(msg)

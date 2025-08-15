@@ -5,6 +5,8 @@ from django.utils.text import slugify
 
 from images.models import Image
 
+MAX_TITLE_LENGTH = 50
+
 
 class ImageCreateForm(forms.ModelForm):
     class Meta:
@@ -28,8 +30,8 @@ class ImageCreateForm(forms.ModelForm):
         image_url = self.cleaned_data["url"]
         image_title = (
             self.cleaned_data["title"]
-            if len(self.cleaned_data["title"]) < 50  # noqa: PLR2004
-            else self.cleaned_data["title"][:50] + "..."
+            if len(self.cleaned_data["title"]) < MAX_TITLE_LENGTH
+            else self.cleaned_data["title"][:MAX_TITLE_LENGTH] + "..."
         )
         image_description = self.cleaned_data["description"]
         name = slugify(image.title)

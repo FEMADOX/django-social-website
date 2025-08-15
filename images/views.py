@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -13,11 +15,13 @@ from django.http import (
 )
 from django.shortcuts import get_object_or_404, redirect, render
 
+from accounts.views import cast
 from action.models import Action
 from images.forms import ImageCreateForm
 from images.models import Image
 
-# Create your views here.
+if TYPE_CHECKING:
+    from common.stubs import ExtendedImage, ExtendedUser
 
 
 @login_required
@@ -74,7 +78,7 @@ def image_detail(request: HttpRequest, img_id: int, slug: str) -> HttpResponse:
 def image_like(request: HttpRequest) -> JsonResponse:
     image_id = request.POST.get("id")
     action = request.POST.get("action")
-    user = User.objects.get(pk=request.user.pk)
+    user: ExtendedUser = cast("ExtendedUser", User.objects.get(pk=request.user.pk))
 
     if not image_id or not action:
         return JsonResponse({
@@ -83,7 +87,7 @@ def image_like(request: HttpRequest) -> JsonResponse:
         })
 
     try:
-        image = Image.objects.get(id=image_id)
+        image: ExtendedImage = cast("ExtendedImage", Image.objects.get(id=image_id))
         if action == "like":
             image.users_like.add(user)
             Action.create_action(user, "Like", image)

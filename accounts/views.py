@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+from typing import TYPE_CHECKING, cast
 
 from django.conf import settings
 from django.contrib import messages
@@ -28,14 +29,16 @@ from accounts.forms import (
 from accounts.models import Contact, Profile
 from action.models import Action
 
-# Create your views here.
+if TYPE_CHECKING:
+    from common.stubs import ExtendedUser
 
 
 @login_required
 def dashboard(request: HttpRequest) -> HttpResponse:
     # Display all actions by default
     actions = Action.objects.exclude(user=request.user)
-    following_ids = request.user.following.values_list("id", flat=True)
+    user = cast("ExtendedUser", request.user)
+    following_ids = user.following.values_list("id", flat=True)
     if following_ids:
         # If user is following others, retrieve only their actions
         actions = actions.filter(user_id__in=following_ids)
@@ -120,13 +123,13 @@ def edit(
     request: HttpRequest,
 ) -> HttpResponse | HttpResponseRedirect | HttpResponsePermanentRedirect:
     user_form = UserEditForm(instance=request.user)
-    user = User.objects.get(pk=request.user.pk)
+    user = cast("ExtendedUser", User.objects.get(pk=request.user.pk))
 
     try:
         profile_form = ProfileEditForm(instance=user.profile)
 
     # ! In case of user without profile
-    except Exception:  # noqa: BLE001
+    except Profile.DoesNotExist:
         user_profile = Profile.objects.create(user=user)
         profile_form = (
             ProfileEditForm(instance=user_profile)
@@ -137,7 +140,7 @@ def edit(
     if request.method == "POST" and user.profile is not None and user:
         user_form = UserEditForm(instance=user, data=request.POST)
         profile_form = ProfileEditForm(
-            instance=request.user.profile,
+            instance=user.profile,
             data=request.POST,
             files=request.FILES,
         )
