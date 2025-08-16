@@ -1,90 +1,119 @@
-const imageLike = () => {
+import anchorAction from './anchorAction.js'
 
-    let options = {
-        method: "POST",
-        headers: { "X-CSRFToken": csrftoken },
-        mode: "same-origin",
-    }
+// const imageLike = () => {
+//     const aButton = document.querySelector("a.like")
+//     // let lastRequestTime = 0
+//     // const throttleDelay = 3000
 
-    document.addEventListener("click", function (event) {
-        if (event.target.matches("a.like")) {
-            event.preventDefault()
 
-            const url = event.target.href
-            let likeButton = event.target
+//     let options = {
+//         method: "POST",
+//         headers: { "X-CSRFToken": csrftoken },
+//         mode: "same-origin",
+//     }
 
-            //* Create form data to send in the request
-            let formData = new FormData()
-            formData.append("id", likeButton.dataset.id)
-            formData.append("action", likeButton.dataset.action)
-            options["body"] = formData
+//     aButton.addEventListener("click", (event) => {
+//         // const now = Date.now()
+//         // if (now - lastRequestTime < throttleDelay) {
+//         //     console.log("Request throttled...")
+//         //     return
+//         // }
+//         // lastRequestTime = now
+//         event.preventDefault()
 
-            //* Send the fetch request
-            fetch(url, options)
-                .then(response => response.json())
-                .then(data => {
-                    if (data["status"] === "ok") {
-                        let previousAction = likeButton.dataset.action
+//         const url = event.target.href
+//         let likeButton = event.target
 
-                        //* Toggle button text and data-action 
-                        let action = previousAction === "like" ? "dislike" : "like"
-                        likeButton.dataset.action = action
-                        likeButton.innerHTML = action
+//         aButton.classList.add("disabled")
+//         aButton.innerHTML = "Processing..."
 
-                        //* Update like count 
-                        let likeCount = document.querySelector("span.count .total")
-                        let totalLikes = parseInt(likeCount.innerHTML)
-                        let likeWord = "like"
-                        totalLikes = previousAction === "like" ? totalLikes + 1 : totalLikes - 1
-                        likeWord = totalLikes !== 1 ? "likes" : "like"
-                        likeCount.innerHTML = `${totalLikes} ${likeWord}`
+//         //* Create form data to send in the request
+//         let formData = new FormData()
+//         formData.append("id", likeButton.dataset.id)
+//         formData.append("action", likeButton.dataset.action)
+//         options["body"] = formData
 
-                        //* Update users like information 
-                        let usersLike = document.getElementById("image-likes")
-                        usersLike.innerHTML = "" // Clear exising content
+//         //* Send the fetch request
+//         fetch(url, options)
+//             .then(response => response.json())
+//             .then(data => {
+//                 if (data["status"] === "ok") {
+//                     let previousAction = likeButton.dataset.action
 
-                        let pUsersLike = document.createElement("p")
-                        pUsersLike.textContent = "Users Like:"
-                        pUsersLike.classList.add("image-detail")
-                        usersLike.appendChild(pUsersLike)
+//                 };
+//             })
+//             .catch(error => {
+//                 console.error("Error:", error)
+//             })
+//             .finally(() => {
+//                 aButton.classList.remove("disabled")
+//             })
+//     })
+// }
+// imageLike()
 
-                        if (totalLikes === 0) {
-                            let txtDiv = document.createElement("div")
-                            let txtNoLikesYet = document.createElement("p")
-                            txtNoLikesYet.textContent = "Nobody likes this image yet"
-                            txtDiv.appendChild(txtNoLikesYet)
-                            usersLike.appendChild(txtDiv)
-                        } else {
-                            data["users_like"].forEach(user => {
-                                let userDiv = document.createElement("div")
-                                userDiv.classList.add("image-likes")
-                                let img = document.createElement("img")
+const imageLike = (previousAction, actionButton, data) => {
+    //* Toggle button text and data-action 
+    const action = previousAction === "like" ? "dislike" : "like"
 
-                                if (user.profile_photo) {
-                                    img.src = user.profile_photo
-                                    userDiv.appendChild(img)
-                                }
+    actionButton.dataset.action = action
+    actionButton.innerHTML = action
 
-                                let p = document.createElement("p")
-                                p.textContent = user.first_name
-                                userDiv.appendChild(p)
-                                usersLike.appendChild(userDiv)
+    //* Update like count 
+    let likeCount = document.querySelector("span.count .total")
+    let totalLikes = parseInt(likeCount.innerHTML)
+    let likeWord = "like"
 
-                                let a = document.createElement("a")
-                                a.href = user.profile_url
-                                a.appendChild(img)
-                                a.appendChild(p)
+    totalLikes = previousAction === "like" ? totalLikes + 1 : totalLikes - 1
+    likeWord = totalLikes !== 1 ? "likes" : "like"
+    likeCount.innerHTML = `${totalLikes} ${likeWord}`
 
-                                userDiv.appendChild(a)
-                                usersLike.appendChild(userDiv)
-                            })
-                        };
-                    };
-                })
-                .catch(error => {
-                    console.error("Error:", error)
-                })
-        };
-    })
+    //* Update users like information 
+    let usersLike = document.getElementById("image-likes")
+
+    usersLike.innerHTML = "" // Clear exising content
+
+    let pUsersLike = document.createElement("p")
+
+    pUsersLike.textContent = "Users Like:"
+    pUsersLike.classList.add("image-detail")
+    usersLike.appendChild(pUsersLike)
+
+    if (totalLikes === 0) {
+        let txtDiv = document.createElement("div")
+        let txtNoLikesYet = document.createElement("p")
+
+        txtNoLikesYet.textContent = "Nobody likes this image yet"
+        txtDiv.appendChild(txtNoLikesYet)
+        usersLike.appendChild(txtDiv)
+    } else {
+        data["users_like"].forEach(user => {
+            let userDiv = document.createElement("div")
+            let img = document.createElement("img")
+
+            userDiv.classList.add("image-likes")
+
+            if (user.profile_photo) {
+                img.src = user.profile_photo
+                userDiv.appendChild(img)
+            }
+
+            let p = document.createElement("p")
+
+            p.textContent = user.first_name
+            userDiv.appendChild(p)
+            usersLike.appendChild(userDiv)
+
+            let a = document.createElement("a")
+
+            a.href = user.profile_url
+            a.appendChild(img)
+            a.appendChild(p)
+
+            userDiv.appendChild(a)
+            usersLike.appendChild(userDiv)
+        })
+    };
 }
-imageLike()
+
+anchorAction('a.like', null, imageLike)

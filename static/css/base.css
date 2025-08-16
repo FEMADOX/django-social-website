@@ -7,17 +7,18 @@
     --base-text-color: black;
     --secondary-text-color: #0e924c;
     --secondary-text-hover-color: #00a74f;
+    --box-shadow-color: rgb(0, 0, 0, 0.1);
     color-scheme: light;
 }
 
 .darkmode {
     --base-color: #1c1b22;
     --secondary-color: #12c064;
-    /* --third-color: #1cdf78; */
     --third-color: #11954f;
     --base-text-color: white;
     --secondary-text-color: #0e924c;
     --secondary-text-hover-color: #00a74f;
+    --box-shadow-color: rgba(255, 255, 255, 0.2);
     color-scheme: dark;
 }
 
@@ -366,6 +367,11 @@ p.image-detail {
     padding-left: 10px;
 }
 
+img.cloudinary-user-detail,
+img.image-detail {
+    box-shadow: 0 0 5px var(--box-shadow-color);
+}
+
 .image-info div {
     padding: 20px 0;
     overflow: auto;
@@ -400,11 +406,16 @@ a.follow {
     background: white;
     text-align: center;
     transition: border-top 0.3s ease-out;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 13px 13px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     flex-shrink: 0;
+    box-shadow:
+        0 0 0 0 var(--secondary-color),
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        2px -1px 4px rgba(0, 0, 0, 0.1),
+        -2px -1px 4px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -493,7 +504,9 @@ a.follow {
     overflow: auto;
     padding: 10px;
     border-radius: 10px;
+    margin-right: 10px;
     transition: 0.3s ease-out;
+    box-shadow: 0 0 5px var(--box-shadow-color);
 }
 
 #people-list .user:hover {
@@ -559,6 +572,12 @@ form.email-validation {
 }
 
 form.email-validation input[type="submit"]:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+a.like.button.disabled,
+a.follow.button.disabled {
     background-color: gray;
     cursor: not-allowed;
 }
