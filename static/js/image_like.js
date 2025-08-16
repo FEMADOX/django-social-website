@@ -1,57 +1,5 @@
 import anchorAction from './anchorAction.js'
 
-// const imageLike = () => {
-//     const aButton = document.querySelector("a.like")
-//     // let lastRequestTime = 0
-//     // const throttleDelay = 3000
-
-
-//     let options = {
-//         method: "POST",
-//         headers: { "X-CSRFToken": csrftoken },
-//         mode: "same-origin",
-//     }
-
-//     aButton.addEventListener("click", (event) => {
-//         // const now = Date.now()
-//         // if (now - lastRequestTime < throttleDelay) {
-//         //     console.log("Request throttled...")
-//         //     return
-//         // }
-//         // lastRequestTime = now
-//         event.preventDefault()
-
-//         const url = event.target.href
-//         let likeButton = event.target
-
-//         aButton.classList.add("disabled")
-//         aButton.innerHTML = "Processing..."
-
-//         //* Create form data to send in the request
-//         let formData = new FormData()
-//         formData.append("id", likeButton.dataset.id)
-//         formData.append("action", likeButton.dataset.action)
-//         options["body"] = formData
-
-//         //* Send the fetch request
-//         fetch(url, options)
-//             .then(response => response.json())
-//             .then(data => {
-//                 if (data["status"] === "ok") {
-//                     let previousAction = likeButton.dataset.action
-
-//                 };
-//             })
-//             .catch(error => {
-//                 console.error("Error:", error)
-//             })
-//             .finally(() => {
-//                 aButton.classList.remove("disabled")
-//             })
-//     })
-// }
-// imageLike()
-
 const imageLike = (previousAction, actionButton, data) => {
     //* Toggle button text and data-action 
     const action = previousAction === "like" ? "dislike" : "like"
