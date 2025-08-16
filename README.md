@@ -73,7 +73,7 @@ ipython>=9.2.0
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/FEMADOX/django-social-website.git
 cd Social_Website
 ```
 
