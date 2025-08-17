@@ -1,5 +1,6 @@
 import hashlib
 import logging
+import re
 from typing import Any
 
 from allauth.utils import build_absolute_uri
@@ -19,20 +20,27 @@ from .models import Profile
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=50, required=True)
-    password = forms.CharField(max_length=50, required=True, widget=forms.PasswordInput)
+    username = forms.CharField(max_length=50, min_length=3, required=True)
+    password = forms.CharField(
+        max_length=50,
+        min_length=8,
+        required=True,
+        widget=forms.PasswordInput,
+    )
 
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(
         label="Password",
         max_length=50,
+        min_length=8,
         required=True,
         widget=forms.PasswordInput,
     )
     password2 = forms.CharField(
         label="Repeat password",
         max_length=50,
+        min_length=8,
         required=True,
         widget=forms.PasswordInput,
     )
@@ -44,7 +52,7 @@ class UserRegistrationForm(forms.ModelForm):
             "email": forms.EmailInput(attrs={"autocomplete": "email"}),
         }
 
-    def clean_password_2(self) -> str:
+    def clean_password2(self) -> str:
         cleaned_data = self.cleaned_data
         if cleaned_data["password"] != cleaned_data["password2"]:
             error_message = "Passwords don't match"
@@ -93,6 +101,34 @@ class UserRegistrationForm(forms.ModelForm):
         except Exception:
             logger = logging.getLogger(__name__)
             logger.exception("SMTP error occurred while sending email")
+
+    def is_valid(self) -> bool:
+        if not super().is_valid():
+            return False
+
+        password = self.cleaned_data["password"]
+
+        if (
+            not re.search(r"[a-z]", password)
+            or not re.search(r"[A-Z]", password)
+            or not re.search(r"[0-9]", password)
+            or not re.search(r"[!@#$%^&*()_+=\-\[\]{}|;:,.<>?]", password)
+        ):
+            self.add_error("password2", "Password must contain at least:")
+            if not re.search(r"[a-z]", password):
+                self.add_error("password2", "* One lowercase letter")
+            if not re.search(r"[A-Z]", password):
+                self.add_error("password2", "* One uppercase letter")
+            if not re.search(r"[0-9]", password):
+                self.add_error("password2", "* One digit (0-9)")
+            if not re.search(r"[!@#$%^&*()_+=\-\[\]{}|;:,.<>?]", password):
+                self.add_error(
+                    "password2",
+                    "* One special character (!@#$%^&*()_+={}|;:,.<>?)",
+                )
+            return False
+
+        return super().is_valid()
 
 
 class UserEditForm(forms.ModelForm):
